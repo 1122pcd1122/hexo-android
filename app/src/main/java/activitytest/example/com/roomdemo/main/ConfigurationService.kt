@@ -30,10 +30,13 @@ class ConfigurationService : LifecycleService() {
                         if (configuration != null) {
                             Log.d(tag, configuration.id.toString() + "")
                             Log.d(tag, configuration.name+"")
+                            Log.d(tag,configuration.user_Icon+"")
                             Log.d(tag, configuration.introduce+"")
                             Log.d(tag, configuration.blog_username+"")
                             Log.d(tag, configuration.icon_night+"")
+                            Log.d(tag,configuration.me+"")
                             Log.d(tag, configuration.icon_white+"")
+                            Log.d(tag,configuration.self_experience+"")
                             Log.d(tag, configuration.listHeadlines+"")
                             manageDatabase(configuration)
                         }
@@ -76,7 +79,7 @@ class ConfigurationService : LifecycleService() {
         super.onDestroy()
     }
 
-    internal class InsertAsyncTask(var configurationDao: ConfigurationDao) : AsyncTask<Configuration?, Int?, Int?>() {
+    internal class InsertAsyncTask(private var configurationDao: ConfigurationDao) : AsyncTask<Configuration?, Int?, Int?>() {
         public override fun doInBackground(vararg params: Configuration?): Int? {
             configurationDao.insertConfiguration(params)
             return null
@@ -84,7 +87,7 @@ class ConfigurationService : LifecycleService() {
 
     }
 
-    internal class UpdateAsyncTask(var configurationDao: ConfigurationDao) : AsyncTask<Configuration?, Int?, Int?>() {
+    internal class UpdateAsyncTask(private var configurationDao: ConfigurationDao) : AsyncTask<Configuration?, Int?, Int?>() {
 
         public override fun doInBackground(vararg params: Configuration?): Int? {
             configurationDao.updateConfiguration(params)

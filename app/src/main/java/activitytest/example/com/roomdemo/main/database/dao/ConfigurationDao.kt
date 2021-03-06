@@ -20,4 +20,5 @@ interface ConfigurationDao {
 
     @Update
     fun updateConfiguration(configuration: Array<out Configuration?>)
+
 }

@@ -61,8 +61,6 @@ class MainRepository {
      */
     @SuppressLint("StaticFieldLeak")
     internal inner class ConfigurationAsyncTask : AsyncTask<Configuration?, Int?, LiveData<Configuration?>?>() {
-
-
         public override fun doInBackground(vararg params: Configuration?): LiveData<Configuration?>? {
             return configurationDao!!.queryConfiguration()
         }

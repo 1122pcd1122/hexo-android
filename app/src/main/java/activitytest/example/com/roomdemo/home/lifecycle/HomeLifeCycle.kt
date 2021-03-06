@@ -3,29 +3,21 @@ package activitytest.example.com.roomdemo.home.lifecycle
 import activitytest.example.com.roomdemo.R
 import activitytest.example.com.roomdemo.home.HomeFragment
 import activitytest.example.com.roomdemo.home.adapter.BlogAdapter
-import activitytest.example.com.roomdemo.home.bean.Root
 import activitytest.example.com.roomdemo.home.utils.DownAndParseBlog
-import activitytest.example.com.roomdemo.home.utils.MonthUtil
 import activitytest.example.com.roomdemo.home.viewmodel.BlogViewModel
-import activitytest.example.com.roomdemo.home.vo.BlogIntroduce
 import activitytest.example.com.roomdemo.main.database.entity.Configuration
 import activitytest.example.com.roomdemo.main.utils.ErrorCodeEnum
 import activitytest.example.com.roomdemo.main.viewModel.ConfigurationViewModel
 import android.annotation.SuppressLint
-import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.TextView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleObserver
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import org.jsoup.Jsoup
-import org.jsoup.nodes.Document
-import java.util.*
 
 class HomeLifeCycle @SuppressLint("InflateParams") constructor(private val homeFragment: HomeFragment, private val blogViewModel: BlogViewModel, private val configurationViewModel: ConfigurationViewModel) : LifecycleObserver {
     private val view: View? = homeFragment.view
@@ -61,6 +53,7 @@ class HomeLifeCycle @SuppressLint("InflateParams") constructor(private val homeF
         down.listBlog().observe(homeFragment,  {
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
             recyclerView?.adapter = view?.context?.let { it1 -> BlogAdapter(it1,it) }
+            down.insertInoDB(it)
         })
     }
 

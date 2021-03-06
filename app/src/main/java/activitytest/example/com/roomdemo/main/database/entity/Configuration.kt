@@ -18,6 +18,19 @@ data class Configuration (
     @ColumnInfo(name = "name", typeAffinity = ColumnInfo.TEXT)
     val name: String?,
 
+    /*
+        用户头像
+     */
+    @ColumnInfo(name = "user_icon",typeAffinity = ColumnInfo.TEXT)
+    val user_Icon:String?,
+
+
+    /*
+        位置
+     */
+    @ColumnInfo(name="location",typeAffinity = ColumnInfo.TEXT)
+    val location:String?,
+
     /**
      * 暗色图标
      */
@@ -41,6 +54,18 @@ data class Configuration (
      */
     @ColumnInfo(name = "introduce", typeAffinity = ColumnInfo.TEXT)
     val introduce: String?,
+
+    /*
+        自我介绍
+     */
+    @ColumnInfo(name = "me",typeAffinity = ColumnInfo.TEXT)
+    val me:String?,
+
+    /*
+        历程
+     */
+    @ColumnInfo(name = "self_experience",typeAffinity = ColumnInfo.TEXT)
+    val self_experience:String?,
 
     /**
      * 列表标题

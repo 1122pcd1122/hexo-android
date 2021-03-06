@@ -10,7 +10,7 @@ import androidx.room.Update
 @Dao
 interface BlogDao {
     @Insert
-    fun insertBlog(Blog: Array<out Blog?>)
+    fun insertBlog(Blog: Blog?)
 
     @Query("SELECT * FROM Blog")
     fun queryBlog(): LiveData<Blog?>?
@@ -20,4 +20,10 @@ interface BlogDao {
 
     @Update
     fun updateBlog(Blog: Array<out Blog?>)
+
+    @Query("SELECT blogId FROM Blog")
+    fun queryBlogId():LiveData<List<String>>
+
+    @Query("SELECT COUNT(*) FROM Blog")
+    fun queryBlogNum():Int
 }
