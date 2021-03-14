@@ -1,8 +1,8 @@
 package activitytest.example.com.roomdemo.main.lifecycle
 
 import activitytest.example.com.roomdemo.R
-import activitytest.example.com.roomdemo.databinding.ActivityMainBinding
-import activitytest.example.com.roomdemo.databinding.PopviewBinding
+import activitytest.example.com.roomdemo.databinding.MainActivityBinding
+import activitytest.example.com.roomdemo.databinding.MainPopviewBinding
 import activitytest.example.com.roomdemo.main.activity.MainActivity
 import activitytest.example.com.roomdemo.main.adapter.RecyclerviewAdapter
 import activitytest.example.com.roomdemo.main.adapter.RecyclerviewAdapter.TextViewClickListener
@@ -38,11 +38,11 @@ class MainActivityLifeCycle(
         /**
          * 主页面绑定
          */
-        private val activityMainBinding: ActivityMainBinding,
+        private val activityMainBinding: MainActivityBinding,
         /**
          * 弹出页绑定
          */
-        private val popViewBinding: PopviewBinding?) : LifecycleObserver {
+        private val popViewBinding: MainPopviewBinding?) : LifecycleObserver {
         private val tag = MainActivityLifeCycle::class.java.name
 
     /**
@@ -50,6 +50,12 @@ class MainActivityLifeCycle(
      */
     private var popupWindow: PopupWindow? = null
 
+
+
+    private val navController by lazy {
+        val fragmentContainerView = activityMainBinding.fragmentContainer
+        Navigation.findNavController(fragmentContainerView)
+    }
     /**
      * Configuration的ViewModel
      */
@@ -76,6 +82,10 @@ class MainActivityLifeCycle(
                 observerConfiguration(configurationViewModel.configurationDb)
             }
         })
+
+        activityMainBinding.mainSelfInfo.setOnClickListener {
+            navController.navigate(R.id.aboutFragment)
+        }
     }
 
     /**
@@ -88,7 +98,7 @@ class MainActivityLifeCycle(
             if (isNight) {
                 if (configuration != null) {
                     if (configuration.icon_white == null) {
-                        setUserIcon(R.drawable.git_white)
+                        setUserIcon(R.drawable.main_icon_im_night)
                     } else {
                         setUserIcon(configuration.icon_white)
                     }
@@ -96,7 +106,7 @@ class MainActivityLifeCycle(
             } else {
                 if (configuration != null) {
                     if (configuration.icon_night == null) {
-                        setUserIcon(R.drawable.git_night)
+                        setUserIcon(R.drawable.main_icon_im_day)
                     } else {
                         setUserIcon(configuration.icon_night)
                     }
@@ -111,7 +121,7 @@ class MainActivityLifeCycle(
      */
     private fun setName(blogName: String?) {
         //设置博客标题
-        activityMainBinding.setBlogName(blogName)
+        activityMainBinding.name = blogName
     }
 
     private fun setUserIcon(imageUrl: String?) {
@@ -136,8 +146,7 @@ class MainActivityLifeCycle(
         return object : TextViewClickListener {
             override fun clickListener(textView: View) {
                 Log.d(tag, "被点击了")
-                val fragmentContainerView = activityMainBinding.fragmentContainer
-                val navController = Navigation.findNavController(fragmentContainerView)
+
                 val fragment = textView as TextView
                 val text = fragment.text
                 when {

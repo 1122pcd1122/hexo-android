@@ -1,42 +1,45 @@
 package activitytest.example.com.roomdemo.home.vo
 
-import java.io.Serializable
+data class BlogIntroduce(
+        /**
+         * 标题
+         */
+        val blogTitle: String,
 
-class BlogIntroduce {
-    /**
-     * 标题
-     */
-    var blogTitle: String? = null
+        /**
+         * 时间
+         */
+        val time: String,
 
-    /**
-     * 时间
-     */
-    var time: String? = null
+        /**
+         * html字符串
+         */
+        val html: String,
 
-    /**
-     * html字符串
-     */
-    var html: String? = null
+        /**
+         * 标签
+         */
+        val tags: Array<String>
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-    /**
-     * 标签
-     */
-    var tags: Array<String>? = null
+        other as BlogIntroduce
 
-    constructor() {}
-    constructor(blogTitle: String?, time: String?, html: String?, tags: Array<String>) {
-        this.blogTitle = blogTitle
-        this.time = time
-        this.html = html
-        this.tags = tags
+        if (blogTitle != other.blogTitle) return false
+        if (time != other.time) return false
+        if (html != other.html) return false
+        if (!tags.contentEquals(other.tags)) return false
+
+        return true
     }
 
-    val tag: StringBuffer
-        get() {
-            val stringBuffer = StringBuffer()
-            for (tag in tags!!) {
-                stringBuffer.append(tag).append(" ")
-            }
-            return stringBuffer
-        }
+    override fun hashCode(): Int {
+        var result = blogTitle.hashCode()
+        result = 31 * result + (time.hashCode())
+        result = 31 * result + html.hashCode()
+        result = 31 * result + tags.contentHashCode()
+        return result
+    }
 }

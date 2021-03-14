@@ -9,25 +9,25 @@
         android:id="@+id/aboutFragment"
         android:name="activitytest.example.com.roomdemo.about.AboutFragment"
         android:label="about"
-        tools:layout="@layout/fragment_about" />
+        tools:layout="@layout/about_fragment" />
     <fragment
         android:id="@+id/archivesFragment"
         android:name="activitytest.example.com.roomdemo.archives.ArchivesFragment"
         android:label="blog"
-        tools:layout="@layout/fragment_archives" />
+        tools:layout="@layout/archives_fragment" />
     <fragment
         android:id="@+id/friendFragment"
         android:name="activitytest.example.com.roomdemo.friend.FriendFragment"
         android:label="friend"
-        tools:layout="@layout/fragment_friend" />
+        tools:layout="@layout/friend_fragment" />
     <fragment
         android:id="@+id/homeFragment"
         android:name="activitytest.example.com.roomdemo.home.HomeFragment"
         android:label="home"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/home_fragment" />
     <fragment
         android:id="@+id/projectFragment"
         android:name="activitytest.example.com.roomdemo.project.ProjectFragment"
         android:label="fragment_project"
-        tools:layout="@layout/fragment_project" />
+        tools:layout="@layout/project_fragment" />
 </navigation>

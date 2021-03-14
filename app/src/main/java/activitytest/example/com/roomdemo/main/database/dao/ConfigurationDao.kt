@@ -13,12 +13,12 @@ import androidx.room.Update
 @Dao
 interface ConfigurationDao {
     @Insert
-    fun insertConfiguration(configuration: Array<out Configuration?>)
+    suspend fun insertConfiguration(configuration: Configuration)
 
     @Query("SELECT * FROM CONFIGURATION")
-    fun queryConfiguration(): LiveData<Configuration?>?
+     fun queryConfiguration(): LiveData<Configuration?>?
 
     @Update
-    fun updateConfiguration(configuration: Array<out Configuration?>)
+    suspend fun updateConfiguration(configuration: Configuration)
 
 }

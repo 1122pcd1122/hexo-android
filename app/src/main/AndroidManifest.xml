@@ -6,21 +6,19 @@
 
     <application
         android:name=".MyApplication"
-        android:allowBackup="true"
-        android:icon="@mipmap/blog_logo"
+        android:allowBackup="false"
+        android:icon="@mipmap/app_logo"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/blog_logo"
+        android:roundIcon="@mipmap/app_logo"
         android:supportsRtl="true"
         android:theme="@style/Theme.RoomDemo"
         android:usesCleartextTraffic="true">
-        <service
-            android:name=".home.BlogService"
-            android:enabled="true"
-            android:exported="true"></service>
+
+
         <service
             android:name=".main.ConfigurationService"
             android:enabled="true"
-            android:exported="true" />
+            android:exported="false" />
 
         <activity android:name=".main.activity.WebViewActivity" />
         <activity android:name=".main.activity.MainActivity">

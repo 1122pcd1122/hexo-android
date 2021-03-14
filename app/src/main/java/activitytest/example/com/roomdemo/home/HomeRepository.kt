@@ -1,5 +1,6 @@
 package activitytest.example.com.roomdemo.home
 
+import activitytest.example.com.roomdemo.MyApplication
 import activitytest.example.com.roomdemo.home.bean.Root
 import activitytest.example.com.roomdemo.main.http.API
 import activitytest.example.com.roomdemo.main.http.RetrofitClient
@@ -15,10 +16,14 @@ import java.io.IOException
 import java.util.*
 
 class HomeRepository {
-    private val blogIntroduce: API?
+
+    /*
+        下载博客信息
+     */
     fun listBlogInfo(): MutableLiveData<List<Root?>?> {
         val mutableLiveData = MutableLiveData<List<Root?>?>()
-        val call = blogIntroduce?.call
+        val call = MyApplication.api?.call
+
         call!!.enqueue(object : Callback<List<Root?>?> {
             override fun onResponse(call: Call<List<Root?>?>?, response: Response<List<Root?>?>?) {
                 Log.d(TAG, "成功")
@@ -44,12 +49,15 @@ class HomeRepository {
         return mutableLiveData
     }
 
+    /*
+        下载博客内容
+     */
     fun downLoadBlogContent(blogContent: List<String?>): MutableLiveData<Set<String>> {
         val contentMutableList = MutableLiveData<Set<String>>()
         val contentList: MutableSet<String> = ArraySet()
         for (i in blogContent.indices) {
             val url = blogContent[i]
-            val responseBodyCall = blogIntroduce!!.downLoadMarkDown(url)
+            val responseBodyCall = MyApplication.api!!.downLoadMarkDown(url)
             responseBodyCall!!.enqueue(object : Callback<ResponseBody?> {
                 override fun onResponse(call: Call<ResponseBody?>?, response: Response<ResponseBody?>?) {
                     try {
@@ -88,7 +96,5 @@ class HomeRepository {
             }
     }
 
-    init {
-        blogIntroduce = RetrofitClient.createService(API::class.java)
-    }
+
 }

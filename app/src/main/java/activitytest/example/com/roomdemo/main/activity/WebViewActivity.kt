@@ -6,12 +6,11 @@ import android.util.Base64
 import android.util.Log
 import android.webkit.WebView
 import androidx.appcompat.app.AppCompatActivity
-import java.util.*
 
 class WebViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_web_view)
+        setContentView(R.layout.main_web_item)
         val bundle = intent.extras
         val html = bundle?.getString("html")
         Log.d(TAG, html+"")

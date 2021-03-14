@@ -10,20 +10,23 @@ import androidx.room.Update
 @Dao
 interface BlogDao {
     @Insert
-    fun insertBlog(Blog: Blog?)
+    suspend fun insertBlog(Blog: Blog?)
 
     @Query("SELECT * FROM Blog")
-    fun queryBlog(): LiveData<Blog?>?
+     fun queryBlog(): LiveData<List<Blog>>
 
     @Query("SELECT * FROM Blog WHERE blogId = :blogId")
-    fun queryByIdInBlog(blogId:String?):LiveData<Blog?>?
+     fun queryByIdInBlog(blogId:String?):LiveData<Blog?>?
 
     @Update
-    fun updateBlog(Blog: Array<out Blog?>)
+    suspend fun updateBlog(Blog: Array<out Blog?>)
 
     @Query("SELECT blogId FROM Blog")
-    fun queryBlogId():LiveData<List<String>>
+     fun queryBlogId():LiveData<List<String>>
 
     @Query("SELECT COUNT(*) FROM Blog")
-    fun queryBlogNum():Int
+     fun queryBlogNum():Int
+
+     @Query("SELECT updateTime from blog")
+     fun queryUpdateTime():LiveData<List<String>>
 }

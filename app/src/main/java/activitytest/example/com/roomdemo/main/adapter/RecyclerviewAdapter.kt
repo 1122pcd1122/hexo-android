@@ -10,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 
 class RecyclerviewAdapter(private val context: Context, private val data: List<String>, private val textViewClickListener: TextViewClickListener) : RecyclerView.Adapter<RecyclerviewAdapter.ViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val view = LayoutInflater.from(context).inflate(R.layout.menu_item_card, parent, false)
+        val view = LayoutInflater.from(context).inflate(R.layout.main_popview_card_item, parent, false)
         return ViewHolder(view)
     }
 

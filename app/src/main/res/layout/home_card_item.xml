@@ -63,7 +63,7 @@
                         <com.google.android.material.imageview.ShapeableImageView
                             android:layout_width="15dp"
                             android:layout_height="15dp"
-                            android:src="@drawable/tags_icon"
+                            android:src="@drawable/home_tagicon_im_normal"
                             android:layout_marginStart="3dp"
                             android:layout_gravity="center"
                             android:background="@android:color/transparent">
@@ -73,7 +73,6 @@
                             android:id="@+id/blog_tags"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="@string/tags"
                             android:textAlignment="center"
                             android:layout_gravity="center"
                             android:layout_marginStart="5dp"
@@ -82,9 +81,6 @@
 
                         </TextView>
                     </LinearLayout>
-
-
-
 
                 </LinearLayout>
 

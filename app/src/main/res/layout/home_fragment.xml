@@ -29,10 +29,10 @@
                     android:gravity="center"
                     android:textAlignment="textStart"
                     android:layout_margin="10dp"
-                    android:textSize="24sp"
+                    android:textSize="24dp"
                     android:textColor="@color/textColor"
                     android:textStyle="bold"
-                    tools:ignore="RtlCompat"
+                    tools:ignore="RtlCompat,SpUsage"
                     android:minHeight="40dp"
                     app:layout_collapseMode="pin" />
 
@@ -48,10 +48,11 @@
                     android:padding="5dp"
                     android:textColor="@color/textColor"
                     android:textAlignment="center"
-                    android:textSize="26sp"
+                    android:textSize="26dp"
                     android:textStyle="italic"
                     app:layout_collapseMode="parallax"
-                    app:layout_collapseParallaxMultiplier="0.6" />
+                    app:layout_collapseParallaxMultiplier="0.6"
+                    tools:ignore="SpUsage" />
             </com.google.android.material.appbar.CollapsingToolbarLayout>
 
 
@@ -77,8 +78,8 @@
                     android:gravity="center"
                     android:textAlignment="textStart"
                     android:textColor="@color/textColor"
-                    android:textSize="24sp"
-                    tools:ignore="RtlCompat">
+                    android:textSize="24dp"
+                    tools:ignore="RtlCompat,SpUsage">
 
                 </TextView>
 

@@ -50,7 +50,8 @@ object MonthUtil {
      */
     fun getNowDate(date: String): String {
         val updateTime = date.substring(5)
-        @SuppressLint("SimpleDateFormat") val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        @SuppressLint("SimpleDateFormat")
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
         try {
             parse = simpleDateFormat.parse(updateTime)
         } catch (e: ParseException) {
@@ -61,5 +62,19 @@ object MonthUtil {
         val dayOfMonth = calendar[Calendar.DAY_OF_MONTH]
         val year = calendar[Calendar.YEAR]
         return getMonthCN(calendar[Calendar.MONTH]) + " " + dayOfMonth + " " + year + "年"
+    }
+
+    fun getYear(date:String): Int {
+        val updateTime = date.substring(5)
+        @SuppressLint("SimpleDateFormat")
+        val simpleDateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        try {
+            parse = simpleDateFormat.parse(updateTime)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+        val calendar = Calendar.getInstance()
+        calendar.time = parse!!
+        return calendar[Calendar.YEAR]
     }
 }

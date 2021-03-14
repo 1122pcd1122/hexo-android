@@ -18,6 +18,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.OnLifecycleEvent
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 class HomeLifeCycle @SuppressLint("InflateParams") constructor(private val homeFragment: HomeFragment, private val blogViewModel: BlogViewModel, private val configurationViewModel: ConfigurationViewModel) : LifecycleObserver {
     private val view: View? = homeFragment.view
@@ -31,6 +33,7 @@ class HomeLifeCycle @SuppressLint("InflateParams") constructor(private val homeF
         listHeadlines = view!!.findViewById(R.id.list_headlines)
         blogUsername = view.findViewById(R.id.blog_user_name)
         introduces = view.findViewById(R.id.blog_introduce)
+
         configurationViewModel.code!!.observe(homeFragment, { integer ->
             if (integer == ErrorCodeEnum.SUCCESS.errorCode) {
                 Log.d(TAG, "网络获取...")
@@ -53,8 +56,13 @@ class HomeLifeCycle @SuppressLint("InflateParams") constructor(private val homeF
         down.listBlog().observe(homeFragment,  {
             recyclerView?.layoutManager = LinearLayoutManager(view?.context)
             recyclerView?.adapter = view?.context?.let { it1 -> BlogAdapter(it1,it) }
-            down.insertInoDB(it)
+
+            GlobalScope.launch {
+                down.insertInoDB(it)
+            }
+
         })
+
     }
 
     private fun observerConfiguration(configurationLiveData: LiveData<Configuration?>?) {

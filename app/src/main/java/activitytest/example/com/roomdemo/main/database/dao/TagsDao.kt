@@ -10,20 +10,20 @@ import androidx.room.Update
 @Dao
 interface TagsDao {
     @Insert
-    fun insertTags(Tags: Tags)
+    suspend fun insertTags(Tags: Tags)
 
     @Query("SELECT * FROM tags")
-    fun queryTags(): LiveData<Tags?>?
+     fun queryTags(): LiveData<Tags?>?
 
     @Query("SELECT * FROM tags WHERE tagName = :tagName")
-    fun queryByIdInTags(tagName:String?): LiveData<Tags?>?
+     fun queryByIdInTags(tagName:String?): LiveData<Tags?>?
 
     @Update
-    fun updateTags(Tags: Array<out Tags>?)
+    suspend fun updateTags(Tags: Array<out Tags>?)
 
     @Query("select tagName from tags")
-    fun queryTagName():LiveData<List<String>>
+     fun queryTagName():LiveData<List<String>?>?
 
     @Query("Select count(*)  from tags")
-    fun queryTagNum():Int
+     fun queryTagNum():Int
 }

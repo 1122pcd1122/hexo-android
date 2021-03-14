@@ -22,13 +22,13 @@ data class Blog (
      * 时间
      */
     @ColumnInfo(name = "updateTime",typeAffinity = ColumnInfo.TEXT)
-    val updateTime: String?,
+    val updateTime: String,
 
     /**
      * html字符串
      */
     @ColumnInfo(name = "html",typeAffinity = ColumnInfo.TEXT)
-    val html: String?
+    val html: String
 
 
 )

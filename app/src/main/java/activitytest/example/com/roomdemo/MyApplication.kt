@@ -11,17 +11,22 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         context = applicationContext
-        myDatabase = MyDatabase.instance
-        api = RetrofitClient.createService(API::class.java)
     }
 
     companion object {
         @SuppressLint("StaticFieldLeak")
         var context: Context? = null
             private set
-        var api: API? = null
-            private set
-        var myDatabase: MyDatabase? = null
-            private set
+        val api: API? by lazy {
+            RetrofitClient.createService(API::class.java)
+        }
+
+        val myDatabase: MyDatabase? by lazy {
+            MyDatabase.instance!!
+        }
+
+
     }
+
+
 }

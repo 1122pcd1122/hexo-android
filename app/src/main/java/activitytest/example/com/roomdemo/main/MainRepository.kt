@@ -31,50 +31,40 @@ class MainRepository {
         get() {
             api!!.getConfiguration("https://raw.githubusercontent.com/1122pcd1122/MyNotes/master/configuration.json")
                     ?.enqueue(object : Callback<Configuration?> {
-                override fun onResponse(call: Call<Configuration?>, response: Response<Configuration?>) {
-                    Log.d(tag, "网络连接成功")
-                    Log.d(tag, response.code().toString() + "")
-                    if (response.code() == ErrorCodeEnum.SUCCESS.errorCode) {
-                        Log.d(tag, response.body().toString())
-                        errorCodeLiveData.postValue(ErrorCodeEnum.SUCCESS.errorCode)
-                        configurationMutableLiveData.postValue(response.body())
-                    } else {
-                        errorCodeLiveData.postValue(ErrorCodeEnum.ERROR_API.errorCode)
-                        configurationMutableLiveData.postValue(null)
-                    }
-                }
+                        override fun onResponse(call: Call<Configuration?>, response: Response<Configuration?>) {
+                            Log.d(tag, "网络连接成功")
+                            Log.d(tag, response.code().toString() + "")
+                            if (response.code() == ErrorCodeEnum.SUCCESS.errorCode) {
+                                Log.d(tag, response.body().toString())
+                                errorCodeLiveData.postValue(ErrorCodeEnum.SUCCESS.errorCode)
+                                configurationMutableLiveData.postValue(response.body())
+                            } else {
+                                errorCodeLiveData.postValue(ErrorCodeEnum.ERROR_API.errorCode)
+                                configurationMutableLiveData.postValue(null)
+                            }
+                        }
 
-                override fun onFailure(call: Call<Configuration?>, t: Throwable) {
-                    Log.d(tag, "网络连接失败")
-                    Log.d(tag, Objects.requireNonNull(t.message)+"")
-                    errorCodeLiveData.postValue(400)
-                    configurationMutableLiveData.postValue(null)
-                }
-            })
+                        override fun onFailure(call: Call<Configuration?>, t: Throwable) {
+                            Log.d(tag, "网络连接失败")
+                            Log.d(tag, Objects.requireNonNull(t.message) + "")
+                            errorCodeLiveData.postValue(400)
+                            configurationMutableLiveData.postValue(null)
+                        }
+                    })
 
 
             return configurationMutableLiveData
         }
 
-    /**
-     * 从数据库中查询的任务线程
-     */
-    @SuppressLint("StaticFieldLeak")
-    internal inner class ConfigurationAsyncTask : AsyncTask<Configuration?, Int?, LiveData<Configuration?>?>() {
-        public override fun doInBackground(vararg params: Configuration?): LiveData<Configuration?>? {
-            return configurationDao!!.queryConfiguration()
-        }
-    }
 
     /**
      * 从数据库中获取Configuration
      * @return Configuration对象
      */
-    val configurationFromDB: LiveData<Configuration?>?
-        get() {
-            val configurationAsyncTask = ConfigurationAsyncTask()
-            return configurationAsyncTask.doInBackground()
-        }
+    val configurationFromDB: LiveData<Configuration?>? = null
+
+    fun get() = run { configurationDao?.queryConfiguration() }
+
 
     /**
      * 获取状态码

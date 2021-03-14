@@ -5,7 +5,7 @@
 
     <data>
         <variable
-            name="blogName"
+            name="name"
             type="String" />
         <variable
             name="imageUrl"
@@ -40,7 +40,7 @@
                     android:layout_height="40dp"
                     android:layout_marginStart="8dp"
                     android:background="@android:color/transparent"
-                    android:src="@drawable/menu_icon"
+                    android:src="@drawable/main_indicate_im_normal"
                     android:paddingTop="5dp"
                     app:layout_constraintBottom_toBottomOf="@+id/blogName"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -58,29 +58,31 @@
                     android:layout_height="40dp"
                     android:textAlignment="center"
                     android:gravity="center"
-                    android:text="@{blogName}"
+                    android:text="@{name}"
                     android:textStyle="bold"
-                    android:textSize="23sp"
+                    android:textSize="23dp"
                     android:textColor="@color/textColor"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent">
+                    app:layout_constraintTop_toTopOf="parent"
+                    tools:ignore="SpUsage">
 
                 </TextView>
 
-                <ImageView
-                    android:id="@+id/imageView"
+                <ImageButton
+                    android:id="@+id/main_selfInfo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:contentDescription="@string/icon"
                     android:padding="5dp"
+                    android:background="@android:color/transparent"
                     app:image="@{imageUrl}"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.95"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:contentDescription="@string/blog" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
