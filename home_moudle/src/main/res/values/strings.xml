@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">home_moudle</string>
+
+    <string name="blog_userName">pcd\'s Blog</string>
+    <string name="blog_title">curry</string>
+    <string name="user_introduce">欢迎来到我的博客</string>
+    <string name="title_activity_web_view">WebViewActivity</string>
+</resources>

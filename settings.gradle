@@ -1,2 +1,6 @@
+include ':person_moudle'
+include ':log_moudle'
+include ':home_moudle'
+include ':network_moudle'
 include ':app'
 rootProject.name = "pcd's Blog"

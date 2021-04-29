@@ -71,18 +71,17 @@
                 </TextView>
 
                 <ImageButton
-                    android:id="@+id/main_selfInfo"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="5dp"
+                    android:id="@+id/mainBtn"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:background="@android:color/transparent"
-                    app:image="@{imageUrl}"
+                    android:contentDescription="@string/blog"
+                    android:padding="5dp"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintHorizontal_bias="0.95"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    android:contentDescription="@string/blog" />
+                    app:layout_constraintTop_toTopOf="parent" />
 
 
             </androidx.constraintlayout.widget.ConstraintLayout>
