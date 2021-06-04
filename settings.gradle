@@ -1,6 +1,11 @@
-include ':person_moudle'
-include ':log_moudle'
-include ':home_moudle'
-include ':network_moudle'
+include ':content_module'
+include ':friend_module'
+include ':editor_module'
+include ':componentbase'
+include ':base'
+include ':person_module'
+include ':log_module'
+include ':home_module'
+include ':network_module'
 include ':app'
-rootProject.name = "pcd's Blog"
+rootProject.name = "pcd's_Blog"

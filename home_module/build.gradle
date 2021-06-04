@@ -1,0 +1,82 @@
+if (Boolean.valueOf(rootProject.ext.isModule)){
+    apply plugin: 'com.android.application'
+}else {
+    apply plugin: 'com.android.library'
+}
+apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
+
+
+
+android {
+    compileSdkVersion rootProject.ext.android["compileSdkVersion"]
+    buildToolsVersion rootProject.ext.android["buildToolsVersion"]
+
+    defaultConfig {
+        if (Boolean.valueOf(rootProject.ext.isModule)){
+            applicationId "activitytest.example.com.home_moudle"
+        }
+        minSdkVersion  rootProject.ext.android["minSdkVersion"]
+        targetSdkVersion rootProject.ext.android["targetSdkVersion"]
+        versionCode rootProject.ext.android["versionCode"]
+        versionName rootProject.ext.android["versionName"]
+
+
+        testInstrumentationRunner  rootProject.ext.dependencies["androidJUnitRunner"]
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+
+    sourceSets {
+        main {
+            // 独立调试与集成调试时使用不同的 AndroidManifest.xml 文件
+            if (Boolean.valueOf(rootProject.ext.isModule)) {
+                manifest.srcFile 'src/main/AndroidManifest.xml'
+            } else {
+                manifest.srcFile 'src/main/moduleMainfest/AndroidManifest.xml'
+            }
+        }
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures{
+        dataBinding = true
+    }
+}
+
+dependencies {
+
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation 'androidx.core:core-ktx:1.3.2'
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation "androidx.activity:activity-ktx:1.2.2"
+    implementation 'com.google.android.material:material:1.2.1'
+    implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.0.4'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.2'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.2'
+    testImplementation 'junit:junit:4.13.2'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.3.9'
+
+    implementation 'com.squareup.retrofit2:retrofit:2.9.0'
+
+    implementation project(path: ':network_module')
+    implementation project(path: ':base')
+
+
+}

@@ -12,10 +12,15 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/home_moudle" />
-            <option value="$PROJECT_DIR$/log_moudle" />
-            <option value="$PROJECT_DIR$/network_moudle" />
-            <option value="$PROJECT_DIR$/person_moudle" />
+            <option value="$PROJECT_DIR$/base" />
+            <option value="$PROJECT_DIR$/componentbase" />
+            <option value="$PROJECT_DIR$/content_module" />
+            <option value="$PROJECT_DIR$/editor_module" />
+            <option value="$PROJECT_DIR$/friend_module" />
+            <option value="$PROJECT_DIR$/home_module" />
+            <option value="$PROJECT_DIR$/log_module" />
+            <option value="$PROJECT_DIR$/network_module" />
+            <option value="$PROJECT_DIR$/person_module" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
