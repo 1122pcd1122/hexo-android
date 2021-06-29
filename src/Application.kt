@@ -24,10 +24,7 @@ fun Application.module() {
         }
 
     }
-
     conf(environment)
-
-
 
 }
 

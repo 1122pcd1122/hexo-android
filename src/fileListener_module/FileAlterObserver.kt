@@ -229,7 +229,7 @@ class FileAlterObserver() {
 
 
     /**
-     * 将目录文件创建的事件触发到注册的侦听器
+     * 向注册的侦听器触发目录文件创建事件。
      *
      * @param entry 文件入口
      */
@@ -296,8 +296,8 @@ class FileAlterObserver() {
         val children = if (listFiles.isNotEmpty()) Array(listFiles.size) {
             MyFile()
         } else MyFile.EMPTY_FILE_ENTRY_ARRAY
-        for (file in listFiles.withIndex()) {
-            children[file.index] = createFileEntry(rootEntry, listFiles[file.index])
+        for (value in listFiles.withIndex()) {
+            children[value.index] = createFileEntry(rootEntry, listFiles[value.index])
         }
 
         return children

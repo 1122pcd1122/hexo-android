@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory
 
 val logger: Logger = LoggerFactory.getLogger(UserFunction::class.java.name)
 
+/**
+ * 用户所有信息
+ */
 fun Route.userInfo() {
     get("/userInfo") {
         val queryConfiguration = UserDao.queryConfiguration("pcd")
@@ -21,18 +24,27 @@ fun Route.userInfo() {
     }
 }
 
+/**
+ * 用户icon
+ */
 fun Route.userIcon() {
     static("/userIcon") {
         file("icon", "C:\\Users\\peichendong\\Desktop\\blog\\images\\user_Icon.png")
     }
 }
 
+/**
+ *
+ */
 fun Route.btnNight() {
     static("/btn_night") {
         file("night", "C:\\Users\\peichendong\\Desktop\\blog\\images\\git_night.png")
     }
 }
 
+/**
+ *
+ */
 fun Route.btnWhite() {
     static("/btn_white") {
         file("white", "C:\\Users\\peichendong\\Desktop\\blog\\images\\git_white.png")

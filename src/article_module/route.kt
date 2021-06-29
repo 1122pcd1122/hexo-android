@@ -93,6 +93,9 @@ fun Route.articleNum() {
     }
 }
 
+/**
+ * 根据标签获取文章
+ */
 fun Route.articleByLabels(){
     get("/articles"){
         val label = call.request.queryParameters["label"]

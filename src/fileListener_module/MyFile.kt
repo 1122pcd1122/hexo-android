@@ -112,7 +112,7 @@ class MyFile(){
             0
         }
 
-        //返回是否有更改
+        //返回是否有文件变化
         return exists != origExist || lastModified != origLastModified || directory != origDirectory || length != origLength
     }
 

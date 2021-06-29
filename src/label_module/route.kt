@@ -12,6 +12,9 @@ import org.slf4j.LoggerFactory
 
 val logger: Logger = LoggerFactory.getLogger(LabelFunction::class.java.name)
 
+/**
+ * 标签数量
+ */
 fun Route.labelNum() {
     get("/labelNum") {
         val tagsNum = LabelDao.labelNum()
@@ -21,6 +24,9 @@ fun Route.labelNum() {
     }
 }
 
+/**
+ * 获取所有标签
+ */
 fun Route.labels(){
     get("/labels"){
         val labels = LabelDao.labels()
