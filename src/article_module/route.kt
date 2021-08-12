@@ -1,10 +1,7 @@
 package com.example.article_module
 
-import common_module.IO.FilePath
 import com.example.common_module.db.dao.BlogDao
-import com.example.common_module.utils.ConfUtil
 import io.ktor.application.*
-import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.slf4j.Logger
@@ -17,11 +14,9 @@ val logger: Logger = LoggerFactory.getLogger(ArticleFunction::class.java.name)
  */
 fun Route.articleHtmlList() {
 
-    static("listHtml") {
-        files(ConfUtil.htmlPath!!)
-        logger.info("读取文章html......")
+    get("listHtml") {
+        call.respondRedirect("")
     }
-
 }
 
 /**
@@ -64,7 +59,7 @@ fun Route.articleByYear() {
         val listof = mutableListOf<Status.ListArticleByYear>()
         BlogDao.listYears().forEach {
             val listArticleByYear = BlogDao.listArticleByYear(it)
-            val articleByYear = Status.ListArticleByYear(it!!, listArticleByYear)
+            val articleByYear = Status.ListArticleByYear(it!!, listArticleByYear,"")
             listof.add(articleByYear)
         }
 

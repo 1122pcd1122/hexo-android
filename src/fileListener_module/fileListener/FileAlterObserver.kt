@@ -1,4 +1,5 @@
-package com.example.fileListener_module
+package com.example.fileListener_module.fileListener
+
 
 import java.io.File
 import java.io.FileFilter
@@ -149,7 +150,7 @@ class FileAlterObserver() {
     fun startObserver() {
 
         for (listener in listeners) {
-            listener.start?.invoke()
+            listener.start(rootEntry?.getFile())
         }
     }
 
@@ -183,7 +184,7 @@ class FileAlterObserver() {
          * 结束工作
          */
         for (listener in listeners) {
-            listener.stop?.invoke()
+            listener.stop(rootEntry?.getFile())
         }
 
     }
@@ -236,9 +237,9 @@ class FileAlterObserver() {
     private fun doCreate(entry: MyFile) {
         for (listener in listeners) {
             if (entry.isDirectory()) {
-                listener.fileDirectoryCreate?.invoke(entry.getFile()!!)
+                listener.fileDirectoryCreate(entry.getFile())
             } else {
-                listener.fileCreate?.invoke(entry.getFile()!!)
+                listener.fileCreate(entry.getFile())
             }
         }
         val children: Array<MyFile> = entry.getChildren()
@@ -257,9 +258,9 @@ class FileAlterObserver() {
         if (entry.refresh(file)) {
             for (listener in listeners) {
                 if (entry.isDirectory()) {
-                    listener.fileDirectoryChange?.invoke(file)
+                    listener.fileDirectoryChange(file)
                 } else {
-                    listener.fileChange?.invoke(file)
+                    listener.fileChange(file)
                 }
             }
         }
@@ -274,9 +275,9 @@ class FileAlterObserver() {
     private fun doDelete(entry: MyFile) {
         for (listener in listeners) {
             if (entry.isDirectory()) {
-                listener.fileDirectoryDelete?.invoke(entry.getFile()!!)
+                listener.fileDirectoryDelete(entry.getFile())
             } else {
-                listener.fileDelete?.invoke(entry.getFile()!!)
+                listener.fileDelete(entry.getFile())
             }
         }
 
@@ -342,5 +343,7 @@ class FileAlterObserver() {
 
         return children
     }
+
+
 
 }

@@ -1,4 +1,4 @@
-package com.example.fileListener_module
+package com.example.fileListener_module.fileListener
 
 import kotlinx.coroutines.*
 
@@ -35,27 +35,19 @@ class FileAlterMonitor {
     private var running = false
 
     /**
-     * 构造器 根据轮询间隔来创建构造器
-     *
-     * @param interval 轮询间隔
+     * 设置轮询间隔
      */
-    constructor(interval: Long? = null) : this(interval, null)
+   fun setInterval(interval:Long){
+       this.interval = interval
+   }
+
 
     /**
-     * 构造器 轮询间隔和观察者来创建构造器
-     *
-     * @param interval 轮询间隔
-     * @param observers 观察者
+     * 添加观察者列表
      */
-    constructor(interval: Long? = null, observers: List<FileAlterObserver>? = null) {
-        if (interval != null) {
-            this.interval = interval
-        }
-        observers?.forEach {
-            this.observers.add(it)
-        }
+    fun addObservers(observers: List<FileAlterObserver>?){
+        this.observers = observers as MutableList<FileAlterObserver>
     }
-
 
     /**
      *

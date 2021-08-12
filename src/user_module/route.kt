@@ -2,7 +2,9 @@ package com.example.user_module
 
 
 import com.example.common_module.db.dao.UserDao
+import com.example.common_module.utils.ConfUtil
 import io.ktor.application.*
+import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -29,7 +31,7 @@ fun Route.userInfo() {
  */
 fun Route.userIcon() {
     static("/userIcon") {
-        file("icon", "C:\\Users\\peichendong\\Desktop\\blog\\images\\user_Icon.png")
+
     }
 }
 
@@ -38,7 +40,7 @@ fun Route.userIcon() {
  */
 fun Route.btnNight() {
     static("/btn_night") {
-        file("night", "C:\\Users\\peichendong\\Desktop\\blog\\images\\git_night.png")
+
     }
 }
 
@@ -47,10 +49,8 @@ fun Route.btnNight() {
  */
 fun Route.btnWhite() {
     static("/btn_white") {
-        file("white", "C:\\Users\\peichendong\\Desktop\\blog\\images\\git_white.png")
+
     }
 }
-
-
 
 

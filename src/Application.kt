@@ -32,14 +32,19 @@ fun conf(environment: ApplicationEnvironment) {
     /**
      * 运行环境
      */
-    ConfUtil.env = environment.config.propertyOrNull(ConfUtil.KEY_ENV)?.getString() ?: "LOCAL"
+    ConfUtil.env = environment.config.property(ConfUtil.KEY_ENV).getString()
+
 
     /**
-     *markdown的默认路径
+     * 打卡路径
      */
-    ConfUtil.mdPath = environment.config.property(ConfUtil.KEY_CONFIG_MD).getString()
+    ConfUtil.clockIn = environment.config.property( if(ConfUtil.env == "LOCAL") ConfUtil.CLOCKIN else ConfUtil.REMOTECLOCKIN).getString()
 
-    ConfUtil.htmlPath = environment.config.property(ConfUtil.KEY_CONFIG_HTML).getString()
+    /**
+     *markdown的路径
+     */
+    ConfUtil.mdPath = environment.config.property( if(ConfUtil.env == "LOCAL") ConfUtil.KEY_LOCAL_MD else ConfUtil.KEY_REMOTE_MD).getString()
+
 
 
     ConfUtil.dbUrl =
