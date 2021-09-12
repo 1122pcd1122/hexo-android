@@ -1,7 +1,9 @@
 package com.example.article_module
 
 import com.example.common_module.db.dao.BlogDao
+import com.example.common_module.db.table.BlogData
 import io.ktor.application.*
+import io.ktor.request.*
 import io.ktor.response.*
 import io.ktor.routing.*
 import org.slf4j.Logger
@@ -9,15 +11,7 @@ import org.slf4j.LoggerFactory
 
 val logger: Logger = LoggerFactory.getLogger(ArticleFunction::class.java.name)
 
-/**
- * 获取文章的html
- */
-fun Route.articleHtmlList() {
 
-    get("listHtml") {
-        call.respondRedirect("")
-    }
-}
 
 /**
  * 获取所有文章名
@@ -88,15 +82,22 @@ fun Route.articleNum() {
     }
 }
 
-/**
- * 根据标签获取文章
- */
-fun Route.articleByLabels(){
-    get("/articles"){
-        val label = call.request.queryParameters["label"]
-        val articlesByLabel = BlogDao.articlesByLabel(label!!)
-        val respond = Status.ArticlesByLabel(200, articlesByLabel, "${label}的文章")
+fun Route.articleByLabel(){
+    get("/articles") {
+        val receiveParameters = call.request.queryParameters
+        val label = receiveParameters["label"]
+        val listArticleByLabel = BlogDao.listArticleByLabel(label)
+        val mutableListOf = mutableListOf<BlogData>()
+        listArticleByLabel.forEach {
+            val queryArticleInfo = BlogDao.queryArticleInfo(it)
+            if (queryArticleInfo != null) {
+                mutableListOf.add(queryArticleInfo)
+            }
+        }
+
+        val respond = Status.ArticlesByLabel(200, mutableListOf, "文章")
         call.respond(respond)
         logger.info("服务器响应成功 信息状态码:${respond.code} 信息状态描述:${respond.message}")
     }
 }
+

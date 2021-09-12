@@ -8,8 +8,6 @@ import io.ktor.http.*
 import io.ktor.gson.*
 import io.ktor.features.*
 
-fun main(args: Array<String>): Unit = io.ktor.server.tomcat.EngineMain.main(args)
-
 
 fun Application.module() {
 

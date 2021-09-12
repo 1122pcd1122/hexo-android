@@ -14,11 +14,10 @@ fun Application.article() {
     routing {
 
         articleByYear()
-        articleHtmlList()
         articleTitleList()
         articleNum()
         article()
-        articleByLabels()
+        articleByLabel()
     }
 
 

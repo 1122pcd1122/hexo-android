@@ -1,5 +1,6 @@
 package com.example.common_module.db.dao
 
+import com.example.common_module.db.table.LabelData
 import com.example.user_module.logger
 import common_module.db.DB
 import common_module.db.table.LabelTable
@@ -11,16 +12,13 @@ class LabelDao {
         /**
          * 插入标签
          */
-        fun insertTag(tag: String?): Boolean {
-
-            if (tag == null || tag == "") {
-                return false
-            }
+        fun insertTag(labelData: LabelData?): Boolean {
 
             try {
                 val db = DB.database.from(LabelTable)
                 db.database.insert(LabelTable) {
-                    set(it.tagName, tag)
+                    set(it.title, labelData?.title)
+                    set(it.tag, labelData?.tag)
                 }
             }catch (e:Exception){
                 logger.info(e.toString())
@@ -36,8 +34,14 @@ class LabelDao {
          * 标签数量
          */
         fun labelNum(): Int {
-            val query = DB.database.from(LabelTable).select()
-            return query.rowSet.size()
+            val query = DB.database.from(LabelTable).selectDistinct(LabelTable.tag)
+            var len = 0
+            val iterator = query.iterator()
+            while (iterator.hasNext()){
+                iterator.next()
+                len++
+            }
+            return len
         }
 
         /**
@@ -45,13 +49,16 @@ class LabelDao {
          */
         fun labels(): List<String> {
             val list = mutableListOf<String>()
-            val query = DB.database.from(LabelTable).select()
-            query.forEach {
-                val string = it.getString("tagName")
-                if (string != null) {
-                    list.add(string)
+            val query = DB.database.from(LabelTable).selectDistinct(LabelTable.tag)
+
+            val iterator = query.iterator()
+            while (iterator.hasNext()){
+                val tag = iterator.next()[LabelTable.tag]
+                if (tag != null) {
+                    list.add(tag)
                 }
             }
+
             return list
         }
 
@@ -60,26 +67,28 @@ class LabelDao {
          */
         fun isContain(label: String?): Boolean {
             val query = DB.database.from(LabelTable).select().where {
-                LabelTable.tagName eq label!!
+                LabelTable.title eq label.toString()
             }
 
-            if (query.rowSet.size() == 0){
-                return false
-            }
-            return true
+            return query.iterator().hasNext()
         }
 
-
-        /**
-         * 删除标签
-         */
-        fun deleteLabel(tag: String?) {
-            DB.database.delete(LabelTable) {
-                it.tagName.eq(tag.toString())
+        fun deleteTag(labelData: LabelData?){
+            DB.database.delete(LabelTable){
+                it.title eq labelData?.title.toString()
             }
         }
 
 
+        fun updateTag(labelData: LabelData?){
+            DB.database.update(LabelTable){
+                it.tag eq  labelData?.tag.toString()
+                where {
+                    it.title eq labelData?.title.toString()
+                }
+            }
+        }
     }
+
 }
 

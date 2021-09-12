@@ -1,6 +1,8 @@
 package fileListener_module
 
 import com.example.common_module.utils.ConfUtil
+import com.example.fileListener_module.AboutListener
+import com.example.fileListener_module.ArchivesListener
 import com.example.fileListener_module.fileListener.FileAlterListener
 import com.example.fileListener_module.fileListener.FileAlterMonitor
 import com.example.fileListener_module.fileListener.FileAlterObserver
@@ -17,21 +19,6 @@ class BlogFileListener : FileAlterListener {
     companion object {
 
         private val logger = LoggerFactory.getLogger(BlogFileListener::class.java.name)
-
-        /**
-         * 判断是否是数字
-         */
-        fun isNumeric2(name: String?): Boolean? {
-            return name?.chars()?.allMatch(Character::isDigit)
-        }
-
-        /**
-         * 判断是否是年份 2000年之后
-         */
-        fun is20(name: String?): Boolean? {
-            val chars = name?.toCharArray() ?: return false
-            return chars[0] == '2' && chars[1] == '0'
-        }
 
         /**
          * 根据不同的环境获取文件名
@@ -79,43 +66,50 @@ class BlogFileListener : FileAlterListener {
 
         file?.listFiles()?.forEach {
 
-            val name = getFileName(it)
+            when (val name = getFileName(it)) {
+                "index.html" -> {
+                    //添加index.html监听
+                    val indexObserver: FileAlterObserver = setObserver(absolutePath, name)
 
+                    indexObserver.addListener(IndexListener())
+                    FileAlterMonitor().apply {
+                        addObserver(indexObserver)
+                        start()
+                        logger?.info("index.html监听开始 文件名 -- $name")
+                    }
 
-            if (isNumeric2(name) == true && is20(name) == true) {
-                //添加年份观察者
-
-                val yearObserver: FileAlterObserver = setObserver(absolutePath, name)
-
-                yearObserver.addListener(YearListener())
-                FileAlterMonitor().apply {
-                    addObserver(yearObserver)
-                    start()
-                    logger?.info("文章监听开始 文件名 -- $name")
                 }
+                "tags" -> {
+                    //添加标签观察者
+                    val tagsObserver: FileAlterObserver = setObserver(absolutePath, name)
+                    tagsObserver.addListener(TagsListener())
 
-            } else if (name == "index.html") {
-                //添加index.html监听
-                val indexObserver: FileAlterObserver = setObserver(absolutePath, name)
+                    FileAlterMonitor().apply {
+                        addObserver(tagsObserver)
+                        start()
+                        logger?.info("标签监听开始 文件名 -- $name ")
+                    }
 
-                indexObserver.addListener(IndexListener())
-                FileAlterMonitor().apply {
-                    addObserver(indexObserver)
-                    start()
-                    logger?.info("index.html监听开始 文件名 -- $name")
                 }
+                "about" -> {
+                    val aboutObserver = setObserver(absolutePath, name)
+                    aboutObserver.addListener(AboutListener())
 
-            } else if (name == "tags") {
-                //添加标签观察者
-                val tagsObserver: FileAlterObserver = setObserver(absolutePath, name)
-                tagsObserver.addListener(TagsListener())
-
-                FileAlterMonitor().apply {
-                    addObserver(tagsObserver)
-                    start()
-                    logger?.info("标签监听开始 文件名 -- $name ")
+                    FileAlterMonitor().apply {
+                        addObserver(aboutObserver)
+                        start()
+                        logger?.info("about监听开始 文件名 -- $name")
+                    }
                 }
-
+                "archives" -> {
+                    val archivesObserver = setObserver(absolutePath,name)
+                    archivesObserver.addListener(ArchivesListener())
+                    FileAlterMonitor().apply {
+                        addObserver(archivesObserver)
+                        start()
+                        logger?.info("archives监听开始 文件名 -- $name")
+                    }
+                }
             }
 
         }

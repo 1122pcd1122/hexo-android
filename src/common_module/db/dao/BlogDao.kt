@@ -3,7 +3,7 @@ package com.example.common_module.db.dao
 import common_module.db.DB
 import common_module.db.table.BlogTable
 import com.example.common_module.db.table.BlogData
-import io.ktor.http.cio.*
+import common_module.db.table.LabelTable
 import me.liuwj.ktorm.database.iterator
 import me.liuwj.ktorm.dsl.*
 
@@ -18,13 +18,10 @@ class BlogDao {
         fun insertArticle(article: BlogData?) {
             DB.database.insert(BlogTable) {
                 set(it.title, article?.title)
-                set(it.date, article?.date)
-                set(it.tags, article?.tags)
-                set(it.htmlUrl, article?.htmlUrl)
+                set(it.href, article?.href)
                 set(it.year, article?.year)
                 set(it.month, article?.month)
                 set(it.day, article?.day)
-                set(it.length, article?.length)
             }
         }
 
@@ -47,7 +44,7 @@ class BlogDao {
         /**
          * 根据年份来获取文章
          */
-        fun listArticleByYear(year: Int?): List<BlogData?> {
+        fun listArticleByYear(year: String?): List<BlogData?> {
             return listArticleByYearOrMonth(year)
         }
 
@@ -55,9 +52,9 @@ class BlogDao {
         /**
          * 获取文章的发布年份
          */
-        fun listYears(): List<Int?> {
+        fun listYears(): List<String?> {
             val query = DB.database.from(BlogTable).select(BlogTable.year)
-            val yearList = mutableListOf<Int?>()
+            val yearList = mutableListOf<String?>()
             for (row in query.rowSet) {
                 yearList.add(row[BlogTable.year])
             }
@@ -70,8 +67,10 @@ class BlogDao {
         fun listAllArticleTitle(): List<String?> {
             val query = DB.database.from(BlogTable).select(BlogTable.title)
             val titleList = mutableListOf<String?>()
-            for (row in query.rowSet) {
-                titleList.add(row[BlogTable.title])
+            val iterator = query.iterator()
+            while (iterator.hasNext()){
+                val title = iterator.next()[BlogTable.title]
+                titleList.add(title)
             }
             return titleList
         }
@@ -91,33 +90,26 @@ class BlogDao {
          * 根据查询条件,获取文章列表
          */
         private fun listArticle(query: Query, articleList: MutableList<BlogData?>) {
-            for (row in query.rowSet) {
-                val blogData = BlogData(
-                    row[BlogTable.title],
-                    row[BlogTable.date],
-                    row[BlogTable.tags],
-                    row[BlogTable.htmlUrl],
-                    row[BlogTable.year],
-                    row[BlogTable.month],
-                    row[BlogTable.day],
-                    row[BlogTable.length])
 
+            val iterator = query.iterator()
+            while (iterator.hasNext()){
+                val next = iterator.next()
+                val blogData = BlogData(next[BlogTable.title],
+                    next[BlogTable.href],
+                    next[BlogTable.year],
+                    next[BlogTable.month],
+                    next[BlogTable.day])
                 articleList.add(blogData)
             }
         }
 
 
-        /**
-         * 根据月份获取文章
-         */
-        fun listBlogByMonth(month: Int?): List<BlogData?> {
-            return listArticleByYearOrMonth(month)
-        }
+
 
         /**
          * 根据年或月来获取文章
          */
-        private fun listArticleByYearOrMonth(yearOrMonth: Int?): List<BlogData?> {
+        private fun listArticleByYearOrMonth(yearOrMonth: String?): List<BlogData?> {
             if (yearOrMonth == null) {
                 return emptyList()
             }
@@ -130,13 +122,11 @@ class BlogDao {
 
                 val blogData = BlogData(
                     row[BlogTable.title],
-                    row[BlogTable.date],
-                    row[BlogTable.tags],
-                    row[BlogTable.htmlUrl],
+                    row[BlogTable.href],
                     row[BlogTable.year],
                     row[BlogTable.month],
                     row[BlogTable.day],
-                    row[BlogTable.length])
+                )
 
                 blogList.add(blogData)
             }
@@ -153,32 +143,7 @@ class BlogDao {
             return query.rowSet.size()
         }
 
-        /**
-         * 通过标签获取文章
-         */
-        fun articlesByLabel(label: String): List<BlogData> {
-            val query = DB.database.from(BlogTable).select().where {
-                BlogTable.tags like "%${label}%"
-            }
 
-            val list = mutableListOf<BlogData>()
-            for (row in query.rowSet) {
-
-                val blogData = BlogData(
-                    row[BlogTable.title],
-                    row[BlogTable.date],
-                    row[BlogTable.tags],
-                    row[BlogTable.htmlUrl],
-                    row[BlogTable.year],
-                    row[BlogTable.month],
-                    row[BlogTable.day],
-                    row[BlogTable.length])
-
-                list.add(blogData)
-            }
-
-            return list
-        }
 
 
         /*
@@ -186,8 +151,26 @@ class BlogDao {
         * */
         fun deleteArticle(title: String?) {
             DB.database.delete(BlogTable) {
-                it.title.eq(title.toString())
+                it.title eq title.toString()
             }
+        }
+
+        fun isChange(blogData: BlogData?): Boolean {
+            val query = DB.database.from(BlogTable).select().where {
+                BlogTable.title eq blogData?.title.toString()
+            }
+
+            val iterator = query.iterator()
+            while (iterator.hasNext()){
+                val next = iterator.next()
+                if (!blogData?.href.equals(next[BlogTable.href]) || !blogData?.year.equals(next[BlogTable.year])
+                    || !blogData?.month.equals(next[BlogTable.month]) || !blogData?.day.equals(next[BlogTable.day])){
+                    return true
+                }
+                break
+            }
+
+            return false
         }
 
         /**
@@ -195,69 +178,54 @@ class BlogDao {
          */
         fun updateArticle(blogData: BlogData?) {
             DB.database.update(BlogTable) {
-                this.set(BlogTable.date, blogData?.date)
-                this.set(BlogTable.year, blogData?.year)
-                this.set(BlogTable.tags, blogData?.tags)
-                this.set(BlogTable.month, blogData?.month)
-                this.set(BlogTable.day, blogData?.day)
-                this.set(BlogTable.length, blogData?.length)
-            }
-        }
-
-        fun updateArticleExTags(blogData: BlogData?){
-            DB.database.update(BlogTable) {
-                this.set(BlogTable.date, blogData?.date)
+                this.set(BlogTable.href,blogData?.href)
                 this.set(BlogTable.year, blogData?.year)
                 this.set(BlogTable.month, blogData?.month)
                 this.set(BlogTable.day, blogData?.day)
-                this.set(BlogTable.length, blogData?.length)
-            }
-        }
 
-        /**
-         * 更新标签
-         */
-        fun updateTags(title: String?, tag: String?) {
-
-            DB.database.update(BlogTable) {
-                set(BlogTable.tags, tag)
                 where {
-                    BlogTable.title eq title.toString()
+                    it.title eq blogData?.title.toString()
                 }
             }
         }
 
 
-
-        /**
-         *
-         */
-        fun articleLength(title: String?):Int?{
-            val query = DB.database.from(BlogTable).select().where {
-                BlogTable.title eq title.toString()
-            }
-            val iterator = query.iterator()
-            while (iterator.hasNext()){
-                val next = iterator.next()
-                return next[BlogTable.length]
+        fun listArticleByLabel(label:String?): List<String> {
+            val query = DB.database.from(LabelTable).select().where {
+                LabelTable.tag eq label.toString()
             }
 
-            return null
-        }
-
-        fun getTag(title: String?):String?{
-            val query = DB.database.from(BlogTable).select().where {
-                BlogTable.title eq title.toString()
-            }
+            val titleList = mutableListOf<String>()
 
             val iterator = query.iterator()
             while (iterator.hasNext()){
                 val next = iterator.next()
-                return next[BlogTable.tags]
+                titleList.add(next[LabelTable.title].toString())
             }
 
-            return null
+            return titleList
         }
+
+        fun queryArticleInfo(title:String?): BlogData? {
+            val query = DB.database.from(BlogTable).select().where {
+                BlogTable.title eq title.toString()
+            }
+            val iterator = query.iterator()
+            var blogData:BlogData?=null
+            while (iterator.hasNext()){
+                val next = iterator.next()
+                blogData = BlogData(
+                    next[BlogTable.title],
+                    next[BlogTable.href],
+                    next[BlogTable.year],
+                    next[BlogTable.month],
+                    next[BlogTable.day],
+                )
+                break
+            }
+            return blogData
+        }
+
     }
 }
 

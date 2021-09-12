@@ -11,22 +11,20 @@ data class UserData(
         val location: String?,
         val blogName: String?,
         val signature: String?,
-        val introduce: String?,
-        val selfExperience: String?
+        val email: String?,
+        val password: String?,
+        val repository:String?
 )
 
 data class BlogData(
         val title: String?,
-        val date: String?,
-        val tags: String?,
-        val htmlUrl: String?,
-        val year: Int?,
-        val month: Int?,
-        val day: Int?,
-        val length:Int?
+        val href: String?,
+        val year: String?,
+        val month: String?,
+        val day: String?,
 )
 
 data class LabelData(
-        val tagId: Int?,
-        val tagName: String?
+        val title: String?,
+        val tag: String?
 )

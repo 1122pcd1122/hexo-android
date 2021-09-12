@@ -2,9 +2,7 @@ package com.example.user_module
 
 
 import com.example.common_module.db.dao.UserDao
-import com.example.common_module.utils.ConfUtil
 import io.ktor.application.*
-import io.ktor.http.*
 import io.ktor.http.content.*
 import io.ktor.response.*
 import io.ktor.routing.*
@@ -30,8 +28,11 @@ fun Route.userInfo() {
  * 用户icon
  */
 fun Route.userIcon() {
-    static("/userIcon") {
-
+    get("/userIcon"){
+        val queryBlogIcon = UserDao.queryBlogIcon()
+        val respond = ResponseInfo.UserIcon(200, queryBlogIcon, "用户头像")
+        call.respond(respond)
+        logger.info("服务器响应成功 信息获取状态码:${respond.code} 信息状态描述:${respond.message}")
     }
 }
 

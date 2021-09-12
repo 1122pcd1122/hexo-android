@@ -18,7 +18,7 @@ sealed class Status {
     data class ArticleNum(val code: Int?, val info: Int?, val message: String?)
 
     //日志
-    data class ListArticleByYear(val year:Int,val listArticle: List<BlogData?>?,val message: String?)
+    data class ListArticleByYear(val year:String,val listArticle: List<BlogData?>?,val message: String?)
 
     data class AllListArticleByYear(val code: Int?, val info: List<ListArticleByYear>?, val message: String?)
 

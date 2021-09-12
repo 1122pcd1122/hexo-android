@@ -26,8 +26,9 @@ class UserDao {
                     row[UserTable.location],
                     row[UserTable.blogName],
                     row[UserTable.signature],
-                    row[UserTable.introduce],
-                    row[UserTable.selfExperience]
+                    row[UserTable.email],
+                    row[UserTable.password],
+                    row[UserTable.repository]
                 )
             }
 
@@ -45,6 +46,31 @@ class UserDao {
                     it.name eq "pcd"
                 }
             }
+        }
+
+        fun updateBlogIcon(imageUrl:String){
+            DB.database.update(UserTable){
+                set(it.userIcon,imageUrl)
+
+                where {
+                    it.name eq "pcd"
+                }
+            }
+        }
+
+        fun queryBlogIcon():String?{
+            val query = DB.database.from(UserTable).select().where {
+                UserTable.name eq "pcd"
+            }
+
+            val iterator = query.iterator()
+            while (iterator.hasNext()){
+                val user = iterator.next()
+                return user[UserTable.userIcon]
+            }
+
+            return null
+
         }
 
         fun querySignature():String?{

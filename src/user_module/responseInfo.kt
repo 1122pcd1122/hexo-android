@@ -13,4 +13,6 @@ class ResponseInfo {
     data class ClockIn(val mobile:String?, val temperature:String?, val city:String?, val district:String?, val address:String?)
 
     data class ClockResponse(val code: String?,val msg: String?)
+
+    data class UserIcon(val code: Int, val info: String?, val message: String?)
 }

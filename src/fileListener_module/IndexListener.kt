@@ -1,5 +1,6 @@
 package fileListener_module
 
+import com.example.common_module.db.dao.BlogDao
 import com.example.common_module.db.dao.UserDao
 import com.example.fileListener_module.fileListener.FileAlterListener
 import com.example.fileListener_module.fileListener.FileAlterObserver
@@ -71,7 +72,7 @@ class IndexListener: FileAlterListener {
     }
 
     override fun fileDelete(file: File?) {
-
+        BlogDao.deleteArticle(file?.name)
     }
 
     override fun fileDirectoryDelete(file: File?) {

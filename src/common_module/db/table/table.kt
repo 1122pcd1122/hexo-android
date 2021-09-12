@@ -14,8 +14,9 @@ sealed class User(tableName: String) : Table<Nothing>(tableName) {
     val location = varchar("location")
     val blogName = varchar("blog_name")
     val signature = varchar("signature")
-    val introduce = text("introduce")
-    val selfExperience = text("self_experience")
+    val email = text("email")
+    val password = text("password")
+    val repository = text("repository")
 }
 
 object UserTable : User("user")
@@ -25,13 +26,10 @@ object UserTable : User("user")
  */
 sealed class Blog (tableName: String) : Table<Nothing>(tableName) {
     val title = varchar("title").primaryKey()
-    val date = text("date")
-    val tags = text("tags")
-    val htmlUrl = text("htmlUrl")
-    val year = int("year")
-    val month = int("month")
-    val day = int("day")
-    val length = int("length")
+    val href = text("href")
+    val year = text("year")
+    val month = text("month")
+    val day = text("day")
 }
 
 object BlogTable : Blog("blog")
@@ -40,8 +38,8 @@ object BlogTable : Blog("blog")
  * 标签
  */
 sealed class Label(tableName: String) : Table<Nothing>(tableName) {
-    val tagId = int("tagId").primaryKey()
-    val tagName = varchar("tagName")
+    val title = varchar("title").primaryKey()
+    val tag = varchar("tag")
 }
 
 object LabelTable : Label("label")
