@@ -8,7 +8,6 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
         <activity android:name=".MainActivity"/>
-        <activity android:name=".WebViewActivity"/>
     </application>
 
 </manifest>

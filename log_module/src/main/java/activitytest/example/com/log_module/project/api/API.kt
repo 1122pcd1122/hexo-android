@@ -1,12 +1,11 @@
 package activitytest.example.com.log_module.project.api
 
-import activitytest.example.com.log_module.project.bean.ListArticleInfo
-import retrofit2.Call
+import activitytest.example.com.log_module.project.bean.ArticleByYears
+import activitytest.example.com.log_module.project.bean.LogBean
+import activitytest.example.com.network_module.ResponseResult
 import retrofit2.http.GET
-import retrofit2.http.Query
-
 
 interface API {
     @GET("articleByYear")
-    fun listBlogByYear(@Query("year") year:Int): Call<ListArticleInfo>
+    suspend fun log():ResponseResult<List<ArticleByYears>>
 }

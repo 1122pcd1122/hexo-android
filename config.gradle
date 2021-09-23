@@ -20,12 +20,12 @@ ext {
             espresso_version : "3.3.0",
             coroutines_version : "1.3.9",
             navigationKtx_version : "2.3.2",
-            fragmentKtx_version : "1.3.4",
+            fragmentKtx_version : "1.3.5",
             livedata_version : "2.3.1",
             lifecycle_version : "2.2.0",
             "retrofit" : "2.9.0",
             "glide" : "4.12.0",
-            "paging": "2.1.2"
+            "paging": "3.0.0",
     ]
 
     dependencies = [

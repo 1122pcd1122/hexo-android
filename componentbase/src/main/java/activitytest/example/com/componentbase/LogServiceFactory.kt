@@ -1,7 +1,6 @@
 package activitytest.example.com.componentbase
 
-import activitytest.example.com.componentbase.service.CommonService
-import activitytest.example.com.componentbase.service.HomeModuleService
+
 import activitytest.example.com.componentbase.service.LogModuleService
 
 object LogServiceFactory {

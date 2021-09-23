@@ -72,8 +72,8 @@
 
                 <ImageButton
                     android:id="@+id/mainBtn"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
                     android:background="@android:color/transparent"
                     android:contentDescription="@string/blog"
                     android:padding="5dp"

@@ -1,5 +1,6 @@
 package activitytest.example.com.home_module.home
 
+import activitytest.example.com.componentbase.ContentServiceFactory
 import activitytest.example.com.home_module.R
 import activitytest.example.com.home_module.databinding.HomeFragmentBinding
 import activitytest.example.com.home_module.home.adapter.BlogAdapter
@@ -9,12 +10,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.lifecycleScope
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.alibaba.android.arouter.facade.annotation.Route
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 
 
+@Route(path = "/home_module/homefragment")
 class HomeFragment : Fragment() {
 
     private lateinit var homeFragmentBinding: HomeFragmentBinding
@@ -25,7 +33,6 @@ class HomeFragment : Fragment() {
                               savedInstanceState: Bundle?): View {
         homeFragmentBinding = DataBindingUtil.inflate(inflater,R.layout.home_fragment, container,false)
 
-
         setRecycleViewAdapter()
         setUserInfo()
         return homeFragmentBinding.root
@@ -35,22 +42,42 @@ class HomeFragment : Fragment() {
      * 设置recycleView的内容
      */
     private fun setRecycleViewAdapter(){
-        blogViewModel.articleList().observe(this.viewLifecycleOwner, { value ->
 
-            //获取ListArticleInfo
-            val data = value?.data
-            if (data != null){
-                Log.d("home_module", "获取到${data::class.java.name}的内容:${data.message}")
+        val blogAdapter = BlogAdapter {
+            val bundle = Bundle()
+            bundle.putString("html", it)
+            if (activity != null) {
+                ContentServiceFactory.getFragmentService()?.startActivity(requireContext(), requireActivity(), bundle, "进入WebActivity")
             }
+        }
 
-            //初始化适配器
-            val blogAdapter = data?.let { BlogAdapter(requireContext(),activity, it.listArticle) }
-            val linearLayoutManager = LinearLayoutManager(homeFragmentBinding.root.context)
-            homeFragmentBinding.recyclerLastItem.apply {
-                this.layoutManager = linearLayoutManager
-                this.adapter = blogAdapter
+        val recyclerView = homeFragmentBinding.reItem
+        val progressBar = homeFragmentBinding.progressBar
+        recyclerView.layoutManager = LinearLayoutManager(requireContext())
+        recyclerView.adapter = blogAdapter
+        lifecycleScope.launch {
+           blogViewModel.articleList().collect {
+               blogAdapter.submitData(it)
+           }
+       }
+
+        blogAdapter.addLoadStateListener {
+            when (it.refresh) {
+                is LoadState.NotLoading -> {
+                    progressBar.visibility = View.INVISIBLE
+                    recyclerView.visibility = View.VISIBLE
+                }
+                is LoadState.Loading -> {
+                    progressBar.visibility = View.VISIBLE
+                    recyclerView.visibility = View.INVISIBLE
+                }
+                is LoadState.Error -> {
+                    val state = it.refresh as LoadState.Error
+                    progressBar.visibility = View.INVISIBLE
+                    Toast.makeText(requireContext(), "Load Error: ${state.error.message}", Toast.LENGTH_SHORT).show()
+                }
             }
-        })
+        }
 
     }
 
@@ -59,17 +86,12 @@ class HomeFragment : Fragment() {
      */
     private fun setUserInfo() {
         blogViewModel.configuration().observe(this.viewLifecycleOwner, { value->
-
-
             //UserInfo
-            val data = value?.data
-
             //列表名
             homeFragmentBinding.also {
                 it.listTitle = "列表"
-                it.userData = data?.userData
+                it.userData = value
                 Log.d("home_module","UserData观察中...")
-                Log.d("home_module", data?.message.toString())
             }
         })
     }

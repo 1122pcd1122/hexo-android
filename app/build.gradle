@@ -2,12 +2,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
+
 android {
     compileSdkVersion rootProject.ext.android["compileSdkVersion"]
     buildToolsVersion rootProject.ext.android["buildToolsVersion"]
 
     defaultConfig {
-        applicationId "activitytest.example.com.roomdemo"
+        applicationId "activitytest.example.com.app"
         minSdkVersion  rootProject.ext.android["minSdkVersion"]
         targetSdkVersion rootProject.ext.android["targetSdkVersion"]
         versionCode rootProject.ext.android["versionCode"]
@@ -16,7 +17,15 @@ android {
         testInstrumentationRunner  rootProject.ext.dependencies["androidJUnitRunner"]
 
 
+        kapt {
+            arguments {
+                arg("AROUTER_MODULE_NAME", project.getName())
+            }
+        }
+
     }
+
+
 
 
     buildTypes {
@@ -51,16 +60,22 @@ dependencies {
     implementation rootProject.ext.dependencies["navigationUiKtx"]
     implementation rootProject.ext.dependencies["fragmentKtx"]
     implementation rootProject.ext.dependencies["glide"]
+    androidTestImplementation 'junit:junit:4.12'
     kapt rootProject.ext.dependencies["glide-compiler"]
 
+    implementation 'androidx.recyclerview:recyclerview:1.2.0'
+
     implementation project(path: ':home_module')
-    implementation project(path: ':person_module')
+    implementation project(path: ':manage_module')
     implementation project(path: ':log_module')
     implementation project(path: ':network_module')
-    implementation project(path: ':friend_module')
-    implementation project(path: ':editor_module')
+    implementation project(path: ':label_module')
     implementation project(path: ':content_module')
+    implementation project(path: ':login_module')
     implementation project(path: ':base')
+
+    implementation 'com.alibaba:arouter-api:1.5.2'
+    kapt 'com.alibaba:arouter-compiler:1.5.2'
 }
 repositories {
     mavenCentral()

@@ -1,12 +1,18 @@
 package activitytest.example.com.home_module.home
 
+import activitytest.example.com.base.IP
 import activitytest.example.com.home_module.home.api.API
-import activitytest.example.com.home_module.home.bean.ListArticleInfo
-import activitytest.example.com.home_module.home.bean.UserInfo
-import activitytest.example.com.network_module.NetRequest
-import activitytest.example.com.network_module.ResultData
-import activitytest.example.com.network_module.datasource.RetrofitClient
-import androidx.lifecycle.LiveData
+import activitytest.example.com.home_module.home.bean.ListArticle
+import activitytest.example.com.home_module.home.bean.UserData
+
+import activitytest.example.com.network_module.RequestAction
+import activitytest.example.com.network_module.ResponseResult
+import activitytest.example.com.network_module.RetrofitClient
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import kotlinx.coroutines.flow.Flow
+
 
 class HomeRepository {
 
@@ -14,27 +20,31 @@ class HomeRepository {
 
         //retrofit客户端
         private val retrofitClient by lazy {
-            RetrofitClient.createDefaultRetrofitClient("http://192.168.43.196:8080/")
+           RetrofitClient().createRetrofitClient(IP.httpUrl)
         }
-        val homeRepository by lazy {
+         val homeRepository by lazy {
             HomeRepository()
         }
 
-        private val service by lazy {
+         val homeService by lazy {
             retrofitClient?.create(API::class.java)
         }
+
+        private const val PAGE_SIZE:Int = 2
+
     }
 
     /**
      * 所有文章
      */
-    fun articleList(): LiveData<ResultData<ListArticleInfo>?> {
+    fun articleList(): Flow<PagingData<ListArticle>> {
 
-        return NetRequest.request() {
-            api {
-                service?.articleList()!!
-            }
-        }
+        return Pager(
+                config = PagingConfig(PAGE_SIZE),
+                pagingSourceFactory = {
+                    HomePagingSource()
+                }
+        ).flow
 
 
     }
@@ -42,12 +52,10 @@ class HomeRepository {
     /**
      * 个人信息
      */
-     fun configuration(): LiveData<ResultData<UserInfo>?> {
+    suspend fun configuration(): ResponseResult<UserData> {
 
-        return NetRequest.request() {
-            api {
-                service?.configuration()!!
-            }
+        return RequestAction.execute {
+            homeService?.configuration()!!
         }
 
     }
