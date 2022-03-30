@@ -1,7 +1,7 @@
 package activitytest.example.com.login_module.screen.common
 
 
-import activitytest.example.com.log_moudle.R
+import activitytest.example.com.login_module.R
 import activitytest.example.com.login_module.navigation.NavigationScreen
 import activitytest.example.com.login_module.ui.theme.Black
 import activitytest.example.com.login_module.ui.theme.Typography
@@ -13,6 +13,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
+import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -25,9 +26,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 
 
 @Composable
@@ -46,6 +49,7 @@ fun ScreenTopBar(title:String){
     Spacer(modifier = Modifier
         .height(25.dp)
         .fillMaxWidth())
+
 }
 
 @Composable
@@ -113,6 +117,11 @@ fun UserNameTextField(userNameValue: MutableState<String>) {
 @Composable
 fun PassWordTextField(passwordValue: MutableState<String>) {
 
+    val isShowPassWord = remember {
+        mutableStateOf(true)
+    }
+
+
     Row(horizontalArrangement = Arrangement.Center,modifier = Modifier.fillMaxWidth()) {
         TextField(
             value = passwordValue.value,
@@ -126,18 +135,22 @@ fun PassWordTextField(passwordValue: MutableState<String>) {
             colors = TextFieldDefaults.textFieldColors(backgroundColor = Color.Transparent),
             trailingIcon = {
                 if (passwordValue.value.isNotEmpty()){
-                    IconButton(
-                        onClick = {
-                            passwordValue.value = ""
+                        IconButton(onClick = {
+                             //点击
+                            isShowPassWord.value = !isShowPassWord.value
+                        },modifier = Modifier.size(25.dp)) {
+                            Icon(Icons.Filled.Lock,contentDescription = "clear",modifier = Modifier.size(25.dp))
                         }
-                    ) {
-                        Icon(Icons.Filled.Clear,contentDescription = "clear",modifier = Modifier.size(25.dp))
-                    }
                 }
 
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-            visualTransformation = PasswordVisualTransformation()
+            visualTransformation = if (isShowPassWord.value){
+                PasswordVisualTransformation()
+            }else{
+                VisualTransformation.None
+            },
+            maxLines = 1
         )
     }
 }
@@ -166,7 +179,6 @@ fun ScreenBottom(navController: NavHostController){
         Row {
 
             TextButton(onClick = { navController.navigate(NavigationScreen.Register().title){
-                this.popUpToRoute
             } }) {
                 Text(text = "Don't have an account?",style = Typography.subtitle1)
                 Text(text = " Sing Up",

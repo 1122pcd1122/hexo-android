@@ -10,4 +10,5 @@
     <color name="toolBarBackGround">#FFFFFF</color>
     <color name="menuBackGround">#F7F7F7</color>
     <color name="textColor">#000000</color>
+    <color name="statusColor">#FFF8F8FF</color>
 </resources>

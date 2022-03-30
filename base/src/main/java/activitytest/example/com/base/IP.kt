@@ -5,19 +5,20 @@ class IP {
         var httpUrl:String = ""
             get() {
                 field = if (isHttps){
-                    "$httpsHeader$host:$port/"
+                    "$httpsHeader$host:$port"
                 }else{
-                    "$httpHeader$host:$port/"
+                    "$httpHeader$host:$port"
                 }
                 return field
             }
         private const val host:String = "pcd11.top"
+
         private var port:String = ""
             get() {
                 field = if (isHttps){
-                    "8443"
+                    "443"
                 }else{
-                    "8080"
+                    "80"
                 }
                 return field
             }
@@ -25,7 +26,7 @@ class IP {
         private const val httpHeader:String = "http://"
         private const val httpsHeader:String = "https://"
 
-        private const val isHttps:Boolean = true
-        const val contentUrl = httpsHeader+ host
+        private const val isHttps:Boolean = false
+        val contentUrl = "$httpHeader$host:$port/blog/pcd/hexo"
     }
 }

@@ -3,4 +3,5 @@
     <string name="tags">标签</string>
     <string name="logs">日志</string>
     <string name="articles">文章</string>
+    <string name="title_activity_two">TwoActivity</string>
 </resources>

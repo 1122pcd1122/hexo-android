@@ -17,78 +17,21 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toTopOf="@+id/guideline"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/guideline">
 
-        </ProgressBar>
 
-        <LinearLayout
-            android:id="@+id/appbar"
+        <androidx.compose.ui.platform.ComposeView
+            android:id="@+id/homeContent"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:orientation="vertical"
+            android:layout_height="match_parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.000">
 
-            app:layout_constraintTop_toTopOf="parent">
-
-
-            <TextView
-                android:id="@+id/blog_introduce"
-                android:layout_width="match_parent"
-                android:layout_height="80dp"
-                android:padding="10dp"
-                android:text="@{userData.signature}"
-                android:textColor="@color/textColor"
-                android:textSize="26sp"
-                android:textStyle="italic" />
-
-        </LinearLayout>
+        </androidx.compose.ui.platform.ComposeView>
 
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/appbar">
-
-            <TextView
-                android:id="@+id/list_headlines"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_margin="10dp"
-                android:gravity="center"
-                android:text="@{listTitle}"
-                android:textAlignment="textStart"
-                android:textColor="@color/textColor"
-                android:textSize="24dp"
-                tools:ignore="RtlCompat,SpUsage">
-
-            </TextView>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/re_item"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/list_headlines" />
-
-
-        </RelativeLayout>
-
-        <androidx.constraintlayout.widget.Guideline
-            android:id="@+id/guideline"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintGuide_begin="436dp" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,11 +9,16 @@
     <option name="filePathToZoomLevelMap">
       <map>
         <entry key="..\:/Android-project/pcd's_Blog/app/src/main/res/layout/main_activity.xml" value="0.1" />
+        <entry key="..\:/Android-project/pcd's_Blog/app/src/main/res/layout/main_popview.xml" value="0.11588275391956374" />
+        <entry key="..\:/Android-project/pcd's_Blog/app/src/main/res/layout/main_popview_card_item.xml" value="0.1" />
+        <entry key="..\:/Android-project/pcd's_Blog/categories_module/src/main/res/layout/activity_main.xml" value="0.16111111111111112" />
+        <entry key="..\:/Android-project/pcd's_Blog/categories_module/src/main/res/layout/fragment_categories.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/home_module/src/main/res/layout/home_card_item.xml" value="0.11168032786885246" />
         <entry key="..\:/Android-project/pcd's_Blog/home_module/src/main/res/layout/home_fragment.xml" value="0.11168032786885246" />
         <entry key="..\:/Android-project/pcd's_Blog/home_module/src/main/res/layout/main_activity.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/home_module/src/main/res/layout/main_web_item.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/label_module/src/main/res/layout/activity_main.xml" value="0.16111111111111112" />
+        <entry key="..\:/Android-project/pcd's_Blog/label_module/src/main/res/layout/friend_fragment.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/label_module/src/main/res/layout/re_tagscontent_item.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/log_module/src/main/res/layout-v14/activity_main.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/log_module/src/main/res/layout-v14/log_first_item.xml" value="0.1" />
@@ -24,10 +29,17 @@
         <entry key="..\:/Android-project/pcd's_Blog/log_module/src/main/res/layout/log_second_item.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/log_module/src/main/res/layout/main_web_item.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/login_module/src/main/res/drawable/ic_launcher_background.xml" value="0.171875" />
+        <entry key="..\:/Android-project/pcd's_Blog/login_module/src/main/res/layout/fragment_blank.xml" value="0.16111111111111112" />
+        <entry key="..\:/Android-project/pcd's_Blog/manage_module/src/main/res/layout-v14/about_fragment.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/manage_module/src/main/res/layout/about_fragment.xml" value="0.16111111111111112" />
         <entry key="..\:/Android-project/pcd's_Blog/manage_module/src/main/res/layout/activity_main.xml" value="0.16111111111111112" />
       </map>
     </option>
+  </component>
+  <component name="EntryPointsManager">
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="androidx.compose.runtime.Composable" />
+    </list>
   </component>
   <component name="NullableNotNullManager">
     <option name="myDefaultNullable" value="org.jetbrains.annotations.Nullable" />

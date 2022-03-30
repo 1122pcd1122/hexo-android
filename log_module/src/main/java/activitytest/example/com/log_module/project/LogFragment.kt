@@ -1,14 +1,17 @@
 package activitytest.example.com.log_module.project
 
+import activitytest.example.com.base.util.TokenUtil
 import activitytest.example.com.log_module.R
 import activitytest.example.com.log_module.databinding.LogFragmentBinding
-import activitytest.example.com.log_module.project.adapter.OneAdapter
+import activitytest.example.com.log_module.project.ui.Logs
+import activitytest.example.com.log_module.project.ui.theme.AppTheme
 import activitytest.example.com.log_module.project.viewModel.LogViewModel
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,22 +25,24 @@ import kotlinx.coroutines.launch
 class LogFragment : Fragment() {
 
     private lateinit var logFragmentBinding: LogFragmentBinding
-    private val logViewModel: LogViewModel by viewModels()
 
 
+
+    @ExperimentalFoundationApi
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         logFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.log_fragment, container, false)
 
 
-        logFragmentBinding.recycleView.layoutManager = LinearLayoutManager(context)
-        val oneAdapter = OneAdapter()
-        logFragmentBinding.recycleView.adapter = oneAdapter
 
+        //如果token为空表示token过期而被删除掉
+        if (TokenUtil.isEmptyByToken() == true){
+            TokenUtil.navToLogin()
+        }
 
-        logViewModel.log().observe(this@LogFragment.viewLifecycleOwner) {
-            lifecycleScope.launch {
-                oneAdapter.submitData(it)
+        logFragmentBinding.composeView.setContent {
+            AppTheme {
+                Logs()
             }
         }
 

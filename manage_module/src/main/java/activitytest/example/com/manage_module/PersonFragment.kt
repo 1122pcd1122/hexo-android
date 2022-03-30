@@ -1,61 +1,57 @@
 package activitytest.example.com.manage_module
 
 
-import activitytest.example.com.manage_module.databinding.AboutFragmentBinding
-import activitytest.example.com.manage_module.viewModel.PersonViewModel
-
-
-import android.annotation.SuppressLint
+import activitytest.example.com.base.MyRouteTable
+import activitytest.example.com.base.util.TokenUtil
+import activitytest.example.com.manage_module.navigation.NavigationScreen
+import activitytest.example.com.manage_module.screen.ManageScreen
+import activitytest.example.com.manage_module.screen.SetScreen
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.databinding.DataBindingUtil
+import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import coil.annotation.ExperimentalCoilApi
 import com.alibaba.android.arouter.facade.annotation.Route
-import com.bumptech.glide.Glide
+import com.alibaba.android.arouter.launcher.ARouter
 
 
 @Route(path = "/manage_module/personfragment")
+@ExperimentalCoilApi
 class PersonFragment : Fragment() {
 
 
-
-    private val personViewModel: PersonViewModel by viewModels()
-    private lateinit var personFragmentBinding: AboutFragmentBinding
-
-    @SuppressLint("LongLogTag")
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
 
-        personFragmentBinding = DataBindingUtil.inflate(inflater, R.layout.about_fragment, container, false)
-
-
-
-        return personFragmentBinding.root
+        return ComposeView(requireContext()).apply{
+            setContent {
+                val navHostController = rememberNavController()
+                NavHost(navController = navHostController, startDestination = NavigationScreen.MANAGE().title){
+                    composable(NavigationScreen.MANAGE().title) {
+                        activity?.let { at -> ManageScreen(at,navHostController) }
+                    }
+                    composable(NavigationScreen.SET().title) {
+                        SetScreen()
+                    }
+                }
+            }
+        }
     }
 
     override fun onStart() {
         super.onStart()
 
-        personViewModel.tagNum().observe(this){
-            personFragmentBinding.tagsNum = it
+        if (TokenUtil.isEmptyByToken() == true){
+            ARouter.getInstance().build(MyRouteTable.loginModule_MainActivity).navigation()
         }
-
-        personViewModel.articleNum().observe(this){
-            val data = it
-            personFragmentBinding.articleNum = data
-            personFragmentBinding.logNum = data
-        }
-
-        personViewModel.userInfo().observe(this){
-            personFragmentBinding.configuration = it
-
-            Glide.with(this).load(it?.userIcon).into(personFragmentBinding.icon)
-        }
-
     }
+
+
 
 
 

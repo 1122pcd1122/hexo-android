@@ -1,6 +1,5 @@
 include ':content_module'
 include ':label_module'
-include ':componentbase'
 include ':base'
 include ':manage_module'
 include ':log_module'
@@ -9,3 +8,4 @@ include ':network_module'
 include ':app'
 include ':login_module'
 rootProject.name = "pcd's_Blog"
+include ':categories_module'

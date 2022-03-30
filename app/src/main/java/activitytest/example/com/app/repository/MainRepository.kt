@@ -4,7 +4,6 @@ import activitytest.example.com.network_module.RetrofitClient
 
 import activitytest.example.com.app.api.API
 import activitytest.example.com.app.bean.UserData
-import activitytest.example.com.base.IP
 import activitytest.example.com.network_module.RequestAction
 import activitytest.example.com.network_module.ResponseResult
 
@@ -15,7 +14,7 @@ class MainRepository {
 
         //retrofit客户端
         private val retrofitClient by lazy {
-            RetrofitClient().createRetrofitClient(IP.httpUrl)
+            RetrofitClient.defaultRetrofitClient()
         }
         val mainRepository by lazy {
             MainRepository()
@@ -28,7 +27,6 @@ class MainRepository {
 
     /*
         获取博客信息
-        blogName 博客名
      */
     suspend fun blogInfo(): ResponseResult<UserData> {
         return RequestAction.execute {
@@ -37,8 +35,6 @@ class MainRepository {
 
 
     }
-
-
 
 }
 

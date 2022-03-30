@@ -2,10 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="activitytest.example.com.manage_module">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <application>
-        <activity android:name="activitytest.example.com.manage_module.MainActivity"/>
-    </application>
+    <uses-permission android:name="android.permission.INTERNET" />
+
+
 
 </manifest>
-

@@ -1,17 +1,12 @@
 package activitytest.example.com.home_module.home
 
-import activitytest.example.com.base.IP
 import activitytest.example.com.home_module.home.api.API
-import activitytest.example.com.home_module.home.bean.ListArticle
+import activitytest.example.com.home_module.home.bean.Article
 import activitytest.example.com.home_module.home.bean.UserData
 
 import activitytest.example.com.network_module.RequestAction
 import activitytest.example.com.network_module.ResponseResult
 import activitytest.example.com.network_module.RetrofitClient
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
-import kotlinx.coroutines.flow.Flow
 
 
 class HomeRepository {
@@ -20,7 +15,7 @@ class HomeRepository {
 
         //retrofit客户端
         private val retrofitClient by lazy {
-           RetrofitClient().createRetrofitClient(IP.httpUrl)
+           RetrofitClient.defaultRetrofitClient()
         }
          val homeRepository by lazy {
             HomeRepository()
@@ -30,21 +25,16 @@ class HomeRepository {
             retrofitClient?.create(API::class.java)
         }
 
-        private const val PAGE_SIZE:Int = 2
-
     }
 
     /**
      * 所有文章
      */
-    fun articleList(): Flow<PagingData<ListArticle>> {
+    suspend fun articleList(): ResponseResult<List<Article>> {
 
-        return Pager(
-                config = PagingConfig(PAGE_SIZE),
-                pagingSourceFactory = {
-                    HomePagingSource()
-                }
-        ).flow
+        return RequestAction.execute {
+            homeService?.articleList()!!
+        }
 
 
     }
@@ -57,7 +47,21 @@ class HomeRepository {
         return RequestAction.execute {
             homeService?.configuration()!!
         }
+    }
 
+    /**
+     * 页数
+     */
+    suspend fun pageNum():ResponseResult<Int>{
+        return RequestAction.execute {
+            homeService?.pageNum()!!
+        }
+    }
+
+    suspend fun articleByPage(page:Int):ResponseResult<List<Article>>{
+        return RequestAction.execute {
+            homeService?.articleByPage(page)!!
+        }
     }
 }
 

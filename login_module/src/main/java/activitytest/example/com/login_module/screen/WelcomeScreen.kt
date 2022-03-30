@@ -1,7 +1,7 @@
 package activitytest.example.com.login_module.screen
 
 
-import activitytest.example.com.log_moudle.R
+import activitytest.example.com.login_module.R
 import activitytest.example.com.login_module.navigation.NavigationScreen
 import activitytest.example.com.login_module.screen.common.ScreenBottom
 import activitytest.example.com.login_module.screen.common.ScreenTopBar
@@ -22,10 +22,9 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
+
 
 
 @Composable
@@ -88,9 +87,9 @@ fun WelComeButton(navController: NavHostController) {
         .height(50.dp)
         .fillMaxWidth())
     Row(modifier = Modifier.fillMaxWidth(),horizontalArrangement = Arrangement.Center) {
-        SignIn(navController)
+        SignIn(navController = navController)
         Spacer(modifier = Modifier.width(50.dp))
-        SignUp(navController)
+        SignUp(navController = navController)
     }
 }
 
@@ -98,9 +97,7 @@ fun WelComeButton(navController: NavHostController) {
 fun SignIn(navController: NavHostController) {
     Button(
         onClick = {
-            navController.navigate(NavigationScreen.Login().title) {
-                this.popUpToRoute
-            }
+            navController.navigate(NavigationScreen.Login().title)
         },
         colors = ButtonDefaults.buttonColors(MaterialTheme.colors.primaryVariant),
         modifier = Modifier
@@ -114,9 +111,8 @@ fun SignIn(navController: NavHostController) {
 
 @Composable
 fun SignUp(navController: NavHostController) {
-    Button(onClick = {navController.navigate(NavigationScreen.Register().title) {
-        this.popUpToRoute
-    } },
+
+    Button(onClick = {navController.navigate(NavigationScreen.Register().title)  },
         colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
         modifier = Modifier
             .background(Color.Transparent)
@@ -130,11 +126,4 @@ fun SignUp(navController: NavHostController) {
 }
 
 
-
-@Preview(showBackground = true)
-@Composable
-fun Preview(){
-    val navController = rememberNavController()
-    WelComeScreen(navController)
-}
 

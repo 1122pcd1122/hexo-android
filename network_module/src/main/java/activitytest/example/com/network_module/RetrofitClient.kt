@@ -1,55 +1,50 @@
 package activitytest.example.com.network_module
 
 
+import activitytest.example.com.base.IP
 import android.util.Log
-import com.google.gson.*
 import okhttp3.Interceptor
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.lang.reflect.Type
-import java.util.*
 
 class RetrofitClient {
 
-
-    //默认okhttpClient
-    private var okClient: OkHttpClient? = ClientOkhttp.okHttpClient
-
+    //默认的URL 通过获取base模块的IP地址来配置
     companion object {
-        var baseUrl: String? = null
-            set(value) {
-                Log.d("network_module", "baseUrl设置为$baseUrl")
-                field = value
-            }
+
+        var baseUrl: String? = IP.httpUrl
+
+        /**
+         * 默认的RetrofitClient配置
+         *
+         */
+        fun defaultRetrofitClient():Retrofit?{
+            return Retrofit.Builder().
+                    client(ClientOkhttp.createOkhttpClient(true)).
+                    baseUrl(baseUrl!!).
+                    addConverterFactory(GsonConverterFactory.create()
+                    ).
+            build()
+        }
+
+        /**
+         * 想默认的客户端中添加拦截器
+         * @param interceptor 拦截器
+         */
+        fun addInterceptor(interceptor: Interceptor){
+            ClientOkhttp.defaultOkHttpClient.interceptors().add(interceptor)
+        }
+
+        /**
+         * 更改URL
+         */
+        fun changeBaseUrl(url:String){
+            baseUrl = url
+            Log.d("network_module","更改url为:$url")
+        }
 
     }
 
-    /**
-     * 设置okhttp客户端
-     */
-    fun updateOkhttpClient(okHttpClient: OkHttpClient?) {
-        this.okClient = okHttpClient
-    }
-
-    /**
-     * 获取OkhttpClient
-     */
-    private fun getOkhttpClient(): OkHttpClient? {
-        return okClient
-    }
-
-    //创建RetrofitClient客户端
-    fun createRetrofitClient(baseUrl: String?): Retrofit? {
-
-        Companion.baseUrl = baseUrl
-
-        return Retrofit.Builder()
-                .client(okClient!!)
-                .baseUrl(Companion.baseUrl ?: "")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
-    }
 
 
 

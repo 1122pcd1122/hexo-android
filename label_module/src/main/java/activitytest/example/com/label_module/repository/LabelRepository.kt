@@ -11,7 +11,7 @@ class LabelRepository {
     companion object{
         //retrofit客户端
         private val retrofitClient by lazy {
-            RetrofitClient().createRetrofitClient(IP.httpUrl)
+            RetrofitClient.defaultRetrofitClient()
         }
         val labelRepository by lazy {
             LabelRepository()

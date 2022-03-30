@@ -1,16 +1,20 @@
 package activitytest.example.com.login_module.screen
 
 
+import activitytest.example.com.base.MyRouteTable
+import activitytest.example.com.base.service.ActivityServiceFactory
 import activitytest.example.com.login_module.bean.User
 import activitytest.example.com.login_module.screen.common.*
 import activitytest.example.com.login_module.ui.theme.Typography
 import activitytest.example.com.login_module.ui.theme.White
 import activitytest.example.com.login_module.viewModel.LoginViewModel
+import android.app.Activity
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.livedata.observeAsState
@@ -19,12 +23,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -34,17 +35,54 @@ import kotlinx.coroutines.launch
  * 按钮状态
  */
 enum class ButtonState {
-    Normal, Pressed
+    //文章
+    TEXT,
+    //指示器
+    PROGRESS_INDICATOR
+}
+
+enum class LoginState {
+    //登录开始
+    Start,
+
+    //登录成功
+    SUCCESS,
+
+    //登录失败
+    ERROR,
+
+    //登录完成
+    DONE
 }
 
 
+@RequiresApi(Build.VERSION_CODES.R)
 @Composable
         /**
          * 登录主页
-         * @param navController 导航控制器
+         *
          */
-fun LoginScreen(navController: NavHostController) {
+fun LoginScreen(activity: Activity, navController: NavHostController) {
 
+
+
+    Column {
+        //顶部状态栏
+        ScreenTopBar(title = "Blog")
+        //标题
+        ScreenTitle(oneTitle = "Welcome Back!", twoTitle = "Sign in to continue")
+        //登录事件
+        LoginTopEvent(activity = activity)
+
+        //底部栏
+        ScreenBottom(navController = navController)
+    }
+
+}
+
+@RequiresApi(Build.VERSION_CODES.R)
+@Composable
+fun LoginTopEvent(activity: Activity) {
     //用户名
     val userNameValue = remember {
         mutableStateOf("")
@@ -55,84 +93,25 @@ fun LoginScreen(navController: NavHostController) {
         mutableStateOf("")
     }
 
-    Column {
-        //顶部状态栏
-        ScreenTopBar(title = "Blog")
-        //标题
-        ScreenTitle(oneTitle = "Welcome Back!", twoTitle = "Sign in to continue")
-        //登录输入框
-        LoginTextField(userNameValue, passWordValue)
-        //登录按钮
-        LoginButton(user = User(name = userNameValue.value, password = passWordValue.value))
-        //底部栏
-        ScreenBottom(navController)
+
+    //登录状态
+    val loginViewModel:LoginViewModel = viewModel()
+    val loginState = loginViewModel.loginState.observeAsState()
+
+    //登录输入框
+    LoginTextField(userNameValue, passWordValue)
+
+    //登录按钮
+    LoginButton(activity = activity,loginState){
+        //开始登录
+        CoroutineScope(Dispatchers.Main).launch {
+            loginViewModel.login(user = User(username = userNameValue.value,
+                password = passWordValue.value))
+        }
     }
 
 }
 
-/**
- * 登录点击事件
- * @param loginState 登录状态
- */
-
-@Composable
-fun LoginClickEvent(loginState: State<Any>) {
-    if (loginState.value == true) {
-        //登录成功
-        LoginAlertDialog(title = "登录成功", content = "恭喜你登录成功")
-    } else {
-        //登录失败
-        LoginAlertDialog(title = "登录失败", content = "登录失败")
-    }
-}
-
-@Composable
-fun LoginAlertDialog(title: String, content: String) {
-    val isShowDialog = remember {
-        mutableStateOf(true)
-    }
-    if (isShowDialog.value) {
-
-        AlertDialog(onDismissRequest = {
-            isShowDialog.value = false
-        },
-            buttons = {
-                Row {
-                    Button(
-                        onClick = {
-                            isShowDialog.value = false
-                        },
-                        modifier = Modifier.weight(1f, true),
-                        shape = RoundedCornerShape(bottomStart = 8.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-                    ) {
-                        Text(text = "取消")
-                    }
-                    Button(
-                        onClick = {
-                            isShowDialog.value = false
-                        },
-                        modifier = Modifier.weight(1f, true),
-                        shape = RoundedCornerShape(bottomEnd = 8.dp),
-                        colors = ButtonDefaults.buttonColors(backgroundColor = Color.White),
-                    ) {
-                        Text(text = "确定")
-                    }
-                }
-            },
-            title = {
-                Text(text = title)
-            },
-            text = {
-                Text(text = content)
-            },
-            shape = RoundedCornerShape(8.dp),
-            backgroundColor = Color.White,
-            contentColor = Color.Black,
-            properties = DialogProperties()
-        )
-    }
-}
 
 /**
  * 登录框
@@ -162,31 +141,26 @@ fun LoginTextField(userNameValue: MutableState<String>, passWordValue: MutableSt
 
 /**
  * 登录按钮
- * @param user 用户信息
+ * @param loginState  登录状态
  */
 @Composable
-private fun LoginButton(user: User) {
+private fun LoginButton(activity: Activity,loginState: State<LoginState?>, onClick:() -> Unit) {
 
-    val loginViewModel: LoginViewModel = viewModel()
-    val observeAsState = loginViewModel.loginState.observeAsState("false")
+    //网络状态变化下的按钮字体变化
+    val statusText = remember {
+        mutableStateOf("登录")
+    }
 
-
+    //按钮状态
     val buttonState = remember {
-        mutableStateOf(ButtonState.Normal)
+        mutableStateOf(ButtonState.TEXT)
     }
 
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
         Button(onClick = {
+            onClick()
 
-            CoroutineScope(Dispatchers.Main).launch {
-                loginViewModel.login(user = user)
-            }
-            //按钮状态变化
-            if (buttonState.value == ButtonState.Normal) {
-                buttonState.value = ButtonState.Pressed
-            } else {
-                buttonState.value = ButtonState.Normal
-            }
+
         },
             colors = ButtonDefaults.buttonColors(MaterialTheme.colors.primaryVariant),
             modifier = Modifier
@@ -195,24 +169,36 @@ private fun LoginButton(user: User) {
                 .clip(CircleShape.copy(all = CornerSize(50.dp)))
         )
         {
-            if (buttonState.value == ButtonState.Normal) {
-                Text(text = "Login Now", style = Typography.subtitle2, color = White)
-            } else {
-                CircularProgressIndicator(
-                    color = Color.White,
-                    strokeWidth = 2.dp,
-                    modifier = Modifier.size(24.dp)
-                )
+
+            when(loginState.value){
+                LoginState.Start ->{
+                    //开始
+                    buttonState.value = ButtonState.PROGRESS_INDICATOR
+                }
+                LoginState.SUCCESS ->{
+                    //错误
+                    buttonState.value = ButtonState.TEXT
+                    statusText.value = "登录"
+                    ActivityServiceFactory.getService(MyRouteTable.app_MainActivity)?.startActivity(
+                        activity = activity,null,"")
+                }
+                LoginState.ERROR ->{
+                    //错误
+                    buttonState.value = ButtonState.TEXT
+                    statusText.value = "登录失败"
+                }
+                LoginState.DONE -> {
+                    //完成
+                    buttonState.value = ButtonState.TEXT
+                    statusText.value = "登录"
+                }
             }
+
+            //按钮变化事件
+            ButtonEvent(buttonState,statusText)
+
         }
     }
-
-    if (observeAsState.value == true) {
-        LoginClickEvent(loginState = observeAsState)
-    } else {
-        LoginClickEvent(loginState = observeAsState)
-    }
-
 
     Spacer(modifier = Modifier
         .fillMaxWidth()
@@ -233,9 +219,26 @@ private fun LoginButton(user: User) {
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
+/**
+ * 登录的按钮变化事件
+ */
 @Composable
-fun PreviewContent() {
-    val rememberNavController = rememberNavController()
-    LoginScreen(rememberNavController)
+private fun ButtonEvent(buttonState: MutableState<ButtonState>, statusText: MutableState<String>) {
+    if (buttonState.value == ButtonState.TEXT) {
+        Text(text = statusText.value, style = Typography.subtitle2, color = White)
+    } else {
+        CircularProgressIndicator(
+            color = Color.White,
+            strokeWidth = 2.dp,
+            modifier = Modifier.size(24.dp)
+        )
+    }
 }
+
+
+//@Preview(showBackground = true, showSystemUi = true)
+//@Composable
+//fun PreviewContent() {
+//    val rememberNavController = rememberNavController()
+//    LoginScreen(rememberNavController)
+//}

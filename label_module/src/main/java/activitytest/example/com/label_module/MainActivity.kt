@@ -1,6 +1,6 @@
 package activitytest.example.com.label_module
 
-import activitytest.example.com.friend_module.R
+
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.alibaba.android.arouter.facade.annotation.Route

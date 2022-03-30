@@ -1,8 +1,10 @@
 package activitytest.example.com.label_module.adapter
 
-import activitytest.example.com.friend_module.R
-import activitytest.example.com.friend_module.databinding.ReTagscontentItemBinding
+
+
 import activitytest.example.com.label_module.Article
+import activitytest.example.com.label_module.R
+import activitytest.example.com.label_module.databinding.ReTagscontentItemBinding
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil

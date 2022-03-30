@@ -8,5 +8,8 @@ class ModuleNames {
         const val login_module: String = "login_module"
         const val content_module: String = "content_module"
         const val manage_module: String = "manage_module"
+        const val network_module:String = "network_module"
+        const val categories_module:String = "categories_module"
+        const val base_module:String = "base"
     }
 }

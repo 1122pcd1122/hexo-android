@@ -1,4 +1,4 @@
-package activitytest.example.com.network_module
+package activitytest.example.com.network_module.status
 
 sealed class NetStatus {
 }
@@ -15,7 +15,7 @@ object StartStatus : NetStatus() {
 }
 
 //请求成功
-object SuccessStatus :NetStatus() {
+object SuccessStatus : NetStatus() {
     override fun equals(other: Any?): Boolean {
         return this === other
     }
@@ -26,7 +26,7 @@ object SuccessStatus :NetStatus() {
 }
 
 //网络错误
-object ErrorStatus:NetStatus() {
+object ErrorStatus: NetStatus() {
     override fun equals(other: Any?): Boolean {
         return this === other
     }
@@ -37,7 +37,7 @@ object ErrorStatus:NetStatus() {
 }
 
 //请求完成
-object COMPLETEStatus:NetStatus() {
+object COMPLETEStatus: NetStatus() {
     override fun equals(other: Any?): Boolean {
         return this === other
     }

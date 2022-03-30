@@ -14,12 +14,5 @@
         <!-- Customize your theme here. -->
     </style>
 
-    <style name="Theme.Pcds_Blog.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
 
-    <style name="Theme.Pcds_Blog.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="Theme.Pcds_Blog.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

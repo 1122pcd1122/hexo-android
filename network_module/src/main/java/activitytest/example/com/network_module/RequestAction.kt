@@ -1,6 +1,7 @@
 package activitytest.example.com.network_module
 
-import activitytest.example.com.network_module.status.UpdateStatus
+import activitytest.example.com.base.ModuleNames
+import activitytest.example.com.network_module.status.*
 import android.util.Log
 import com.google.gson.JsonParseException
 import kotlinx.coroutines.Dispatchers
@@ -17,7 +18,7 @@ class RequestAction {
     companion object{
         suspend fun <T> execute(call: suspend () -> ResponseResult<T>): ResponseResult<T> {
 
-            return withContext(Dispatchers.Main){
+            return withContext(Dispatchers.IO){
 
                 //开始
 
@@ -28,7 +29,7 @@ class RequestAction {
                     //成功
                     UpdateStatus.update(status = SuccessStatus)
                 }catch (e:Exception){
-                    Log.d("network_module","网络错误${e.printStackTrace()}")
+                    Log.d(ModuleNames.network_module,e.message.toString())
                     //失败
                     UpdateStatus.update(status = ErrorStatus)
                     return@withContext ApiException.build(e = e).toResponse()

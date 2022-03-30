@@ -33,9 +33,9 @@ class WebActivity : AppCompatActivity() {
             }
         }
 
-        val bundle = intent.extras
-        val html = bundle?.getString("html")
-        webBinding.webView.loadUrl(IP.contentUrl+html)
+
+        val url = intent.getStringExtra("url")
+        webBinding.webView.loadUrl(IP.contentUrl+url)
 
 
 

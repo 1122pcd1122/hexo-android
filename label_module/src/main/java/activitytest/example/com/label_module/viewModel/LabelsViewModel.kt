@@ -2,46 +2,57 @@ package activitytest.example.com.label_module.viewModel
 
 import activitytest.example.com.label_module.Article
 import activitytest.example.com.label_module.repository.LabelRepository
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.launch
 
-class LabelsViewModel:ViewModel() {
+class LabelsViewModel : ViewModel() {
 
-    companion object{
+    companion object {
         private val labelRepository = LabelRepository.labelRepository
     }
 
-    fun listLabels(): LiveData<List<String>?> {
-        val labelsLiveData = MutableLiveData<List<String>?>()
+    init {
+        listLabels()
+    }
+
+    private val _articles = MutableLiveData<List<Article>?>()
+
+    val articles: LiveData<List<Article>?> = _articles
+
+    fun listLabels(): LiveData<List<String>> {
+        val mutableStateListOf = MutableLiveData<List<String>>()
         viewModelScope.launch {
             val listLabels = labelRepository.listLabels()
             val info = listLabels.info
 
-            if (info != null){
-                labelsLiveData.postValue(info)
-            }else{
-                labelsLiveData.postValue(null)
+
+            with(mutableStateListOf) {
+                postValue(info)
             }
+
         }
-       return labelsLiveData
+        return mutableStateListOf
     }
 
-    fun articles(label:String):LiveData<List<Article>?>{
-        val articleLiveData = MutableLiveData<List<Article>?>()
+    fun articles(label: String) {
+
         viewModelScope.launch {
             val articles = labelRepository.articles(label)
             val info = articles.info
 
-            if (info != null){
-                articleLiveData.postValue(info)
-            }else{
-                articleLiveData.postValue(null)
+            if (info != null) {
+                _articles.postValue(info)
+            } else {
+                _articles.postValue(null)
             }
         }
-        return articleLiveData
+
     }
 
 }
